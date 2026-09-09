@@ -19,11 +19,7 @@ PORTFOLIO IMAGES
 - Every category also contains six independent gallery images.
 - The first gallery image is the large image shown after opening.
 - The other five gallery images fill the rows below it.
-- rows controls only how many detail images appear on each row. The values must total 5.
-- Example: rows: [2, 1, 2] means two images, one full-width image, then two images.
-- Desktop widths are calculated automatically from the real proportions of the uploaded images.
-- Images sharing a row always finish on the same baseline with one consistent gap.
-- On mobile, every image uses its natural height and the same vertical gap.
+- Every row in rows > columns must total 12 (7 + 5, 8 + 4, 6 + 6 or 12) so no gaps appear.
 - Every image has its own src line, so each slot can point to a different file or web link.
 - Put local replacement images in this folder beside index.html, or in a subfolder such as images/packaging/.
 - For every image, set:
