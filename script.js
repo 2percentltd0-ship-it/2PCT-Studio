@@ -12,8 +12,10 @@ const grid = document.querySelector('.project-grid');
 const dialog = document.querySelector('.case-dialog');
 const caseShell = dialog.querySelector('.case-shell');
 let activeCategory = order[0];
+let activeProject = null;
 let pointerOpenedProject = null;
 let swipeStart = null;
+let closingFromRoute = false;
 
 function escapeAttribute(value) {
   return String(value).replace(/[&"'<>]/g, character => ({ '&': '&amp;', '"': '&quot;', "'": '&#39;', '<': '&lt;', '>': '&gt;' }[character]));
@@ -27,43 +29,81 @@ function imageMarkup(image, item, loading = 'lazy') {
   return `<img src="${escapeAttribute(image.src)}" alt="${escapeAttribute(alt)}" loading="${loading}" style="object-fit:${escapeAttribute(fit)};object-position:${escapeAttribute(position)}">`;
 }
 
+function slugify(value) {
+  return String(value || 'project')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
+
+function projectSlug(project, index) {
+  return project.slug || `${slugify(project.title || project.company || 'project')}-${index + 1}`;
+}
+
+function projectTitle(project, index) {
+  return project.title || project.company || `Project ${index + 1}`;
+}
+
+function categoryRoute(key) {
+  return `#work/${key}`;
+}
+
+function projectRoute(key, project, index) {
+  return `${categoryRoute(key)}/${projectSlug(project, index)}`;
+}
+
+function setRoute(hash, replace = false) {
+  if (window.location.hash === hash) return;
+  window.history[replace ? 'replaceState' : 'pushState'](null, '', hash);
+}
+
 function renderProjects() {
   grid.innerHTML = order.map(key => {
     const category = categories[key];
     const cover = category.cover;
-    return `<button class="project reveal" data-category="${key}" type="button">
+    return `<a class="project reveal" data-category="${key}" href="${categoryRoute(key)}">
       <span class="project-art">${imageMarkup(cover, category)}<span class="view-project">View category ↗</span></span>
       <span class="project-meta"><span><b>${category.title}</b><small>${category.companies.join(' · ')}</small></span><i>Open ↗</i></span>
-    </button>`;
+    </a>`;
   }).join('');
 
   grid.querySelectorAll('[data-category]').forEach(button => {
     button.addEventListener('pointerdown', () => { pointerOpenedProject = button; });
     button.addEventListener('click', event => {
       if (event.detail === 0) pointerOpenedProject = null;
-      openCategory(button.dataset.category);
+      event.preventDefault();
+      openCategory(button.dataset.category, true);
     });
   });
 }
 
-function renderGallery(item) {
+function projectCard(image, item, key, index, hero = false) {
+  const title = projectTitle(image, index);
+  const label = image.title ? `${title} · ${image.company || ''}` : (image.company || title);
+  return `<a class="visual-project${hero ? ' visual-hero' : ''}" href="${projectRoute(key, image, index)}" data-project-index="${index}" aria-label="View ${escapeAttribute(title)} case study"><figure>${imageMarkup(image, item, hero ? 'eager' : 'lazy')}<span>${escapeAttribute(label.replace(/ · $/, ''))}</span></figure></a>`;
+}
+
+function renderGallery(item, key) {
   const [hero, ...details] = item.images;
   let cursor = 0;
   const rows = item.rows.map(imageCount => {
     const rowImages = details.slice(cursor, cursor + imageCount);
+    const rowStart = cursor + 1;
     cursor += imageCount;
-    const figures = rowImages.map(image => `<figure>${imageMarkup(image, item)}<span>${image.company || item.companies.join(' · ')}</span></figure>`).join('');
+    const figures = rowImages.map((image, rowIndex) => projectCard(image, item, key, rowStart + rowIndex)).join('');
     return `<div class="visual-row">${figures}</div>`;
   }).join('');
-  return `<figure class="visual-hero">${imageMarkup(hero, item, 'eager')}<span>${hero.company || item.companies.join(' · ')}</span></figure>${rows}`;
+  return `${projectCard(hero, item, key, 0, true)}${rows}`;
 }
 
 function justifyGallery(gallery) {
-  gallery.querySelectorAll('.visual-row figure').forEach(figure => {
-    const image = figure.querySelector('img');
+  gallery.querySelectorAll('.visual-row .visual-project').forEach(project => {
+    const image = project.querySelector('img');
     const applyRatio = () => {
       if (!image.naturalWidth || !image.naturalHeight) return;
-      figure.style.setProperty('--image-ratio', String(image.naturalWidth / image.naturalHeight));
+      project.style.setProperty('--image-ratio', String(image.naturalWidth / image.naturalHeight));
     };
     if (image.complete) applyRatio();
     else image.addEventListener('load', applyRatio, { once: true });
@@ -85,30 +125,86 @@ function enableGalleryFocus(gallery) {
   });
 }
 
-function openCategory(key) {
+function bindProjectLinks(gallery, key) {
+  gallery.querySelectorAll('[data-project-index]').forEach(link => {
+    link.addEventListener('click', event => {
+      event.preventDefault();
+      openProject(key, Number(link.dataset.projectIndex), true);
+    });
+  });
+}
+
+function openCategory(key, updateRoute = false) {
   const item = categories[key];
   if (!item) return;
   activeCategory = key;
+  activeProject = null;
+  dialog.querySelector('.project-back').hidden = true;
   dialog.querySelector('.case-index').textContent = item.index;
+  dialog.querySelector('.case-category').textContent = 'Design focus';
   dialog.querySelector('#case-title').textContent = item.title;
   dialog.querySelector('.case-lead').textContent = item.lead;
+  dialog.querySelector('.case-details-label').textContent = 'Selected projects';
+  dialog.querySelector('.case-capabilities-label').textContent = 'What this can include';
   dialog.querySelector('.case-companies').innerHTML = item.companies.map(company => `<li>${company}</li>`).join('');
   dialog.querySelector('.case-capabilities').innerHTML = item.capabilities.map(capability => `<li>${capability}</li>`).join('');
   const gallery = dialog.querySelector('.case-visuals');
-  gallery.innerHTML = renderGallery(item);
+  gallery.innerHTML = renderGallery(item, key);
   justifyGallery(gallery);
   enableGalleryFocus(gallery);
+  bindProjectLinks(gallery, key);
+  dialog.querySelector('.next-project').hidden = false;
+  dialog.querySelector('.swipe-hint').hidden = false;
   if (!dialog.open) dialog.showModal();
   document.body.classList.add('modal-open');
   dialog.querySelector('.case-info').scrollTop = 0;
   dialog.querySelector('.case-visuals').scrollTop = 0;
   caseShell.scrollTop = 0;
+  document.title = `${item.title} — 2 Percent`;
+  if (updateRoute) setRoute(categoryRoute(key));
+}
+
+function openProject(key, index, updateRoute = false) {
+  const item = categories[key];
+  const project = item?.images[index];
+  if (!project) return;
+  activeCategory = key;
+  activeProject = index;
+  const title = projectTitle(project, index);
+  const details = [
+    project.company && `Client: ${project.company}`,
+    project.industry && `Industry: ${project.industry}`,
+    project.market && `Market: ${project.market}`
+  ].filter(Boolean);
+  const services = project.services?.length ? project.services : item.capabilities;
+  const projectImages = project.gallery?.length ? project.gallery : [project];
+  dialog.querySelector('.project-back').hidden = false;
+  dialog.querySelector('.case-index').textContent = `${String(index + 1).padStart(2, '0')} / ${String(item.images.length).padStart(2, '0')}`;
+  dialog.querySelector('.case-category').textContent = item.title;
+  dialog.querySelector('#case-title').textContent = title;
+  dialog.querySelector('.case-lead').textContent = project.summary || 'Add a short explanation of the challenge, the thinking behind the design and the final solution in content.js.';
+  dialog.querySelector('.case-details-label').textContent = 'Project details';
+  dialog.querySelector('.case-capabilities-label').textContent = 'Services';
+  dialog.querySelector('.case-companies').innerHTML = (details.length ? details : [`Client: ${project.company || 'Client name'}`]).map(detail => `<li>${escapeAttribute(detail)}</li>`).join('');
+  dialog.querySelector('.case-capabilities').innerHTML = services.map(service => `<li>${escapeAttribute(service)}</li>`).join('');
+  const gallery = dialog.querySelector('.case-visuals');
+  gallery.innerHTML = projectImages.map((image, imageIndex) => `<figure class="${imageIndex === 0 ? 'visual-hero' : ''}">${imageMarkup(image, item, imageIndex === 0 ? 'eager' : 'lazy')}</figure>`).join('');
+  enableGalleryFocus(gallery);
+  dialog.querySelector('.next-project').hidden = true;
+  dialog.querySelector('.swipe-hint').hidden = true;
+  if (!dialog.open) dialog.showModal();
+  document.body.classList.add('modal-open');
+  dialog.querySelector('.case-info').scrollTop = 0;
+  gallery.scrollTop = 0;
+  caseShell.scrollTop = 0;
+  document.title = `${title} — ${item.title} — 2 Percent`;
+  if (updateRoute) setRoute(projectRoute(key, project, index));
 }
 
 function moveCategory(step, direction) {
   const currentIndex = order.indexOf(activeCategory);
   const nextIndex = (currentIndex + step + order.length) % order.length;
-  openCategory(order[nextIndex]);
+  openCategory(order[nextIndex], true);
 
   caseShell.classList.remove('swipe-from-left', 'swipe-from-right');
   // Restart the short transition even when the user swipes repeatedly.
@@ -117,6 +213,32 @@ function moveCategory(step, direction) {
 }
 
 renderProjects();
+
+function syncRoute() {
+  const match = window.location.hash.match(/^#work\/([^/]+)(?:\/([^/]+))?$/);
+  if (!match) {
+    if (dialog.open) {
+      closingFromRoute = true;
+      dialog.close();
+    }
+    document.title = '2 Percent — Independent Design Studio';
+    return;
+  }
+  const key = match[1];
+  const item = categories[key];
+  if (!item) return;
+  if (!match[2]) {
+    openCategory(key, false);
+    return;
+  }
+  const index = item.images.findIndex((project, projectIndex) => projectSlug(project, projectIndex) === match[2]);
+  if (index >= 0) openProject(key, index, false);
+  else openCategory(key, false);
+}
+
+window.addEventListener('popstate', syncRoute);
+window.addEventListener('hashchange', syncRoute);
+syncRoute();
 
 document.querySelectorAll('img[src="logo-2percent.png"]').forEach(image => {
   image.src = config.brand.logo;
@@ -163,15 +285,34 @@ if (copyEmailButton) {
   });
 }
 
+const contactForm = document.querySelector('.contact-form');
+contactForm?.addEventListener('submit', event => {
+  event.preventDefault();
+  const form = new FormData(contactForm);
+  const subject = `Project inquiry from ${form.get('company') || form.get('name')}`;
+  const body = [
+    `Name: ${form.get('name')}`,
+    `Company: ${form.get('company') || '—'}`,
+    `Email: ${form.get('email')}`,
+    '',
+    String(form.get('brief'))
+  ].join('\n');
+  window.location.href = `mailto:${config.brand.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+});
+
 dialog.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
 dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
 dialog.addEventListener('close', () => {
   document.body.classList.remove('modal-open');
+  document.title = '2 Percent — Independent Design Studio';
+  if (closingFromRoute) closingFromRoute = false;
+  else if (window.location.hash.startsWith('#work/')) setRoute('#work', true);
   if (!pointerOpenedProject) return;
   const project = pointerOpenedProject;
   pointerOpenedProject = null;
   requestAnimationFrame(() => project.blur());
 });
+dialog.querySelector('.project-back').addEventListener('click', () => openCategory(activeCategory, true));
 dialog.querySelector('.next-project').addEventListener('click', () => moveCategory(1, 'left'));
 dialog.querySelector('.case-actions a').addEventListener('click', () => dialog.close());
 
@@ -185,6 +326,7 @@ caseShell.addEventListener('touchstart', event => {
 }, { passive: true });
 
 caseShell.addEventListener('touchend', event => {
+  if (activeProject !== null) return;
   if (!swipeStart || event.changedTouches.length !== 1) return;
   const touch = event.changedTouches[0];
   const deltaX = touch.clientX - swipeStart.x;
