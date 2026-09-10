@@ -14,9 +14,13 @@
       industry: 'Industry',
       market: 'Germany',
       summary: 'A short explanation of the challenge and design solution.',
+      approachTitle: 'The idea behind the work',
+      approach: 'A short explanation of the key creative decision and how the system works.',
+      outcome: 'Optional real-world result or delivered outcome.',
+      year: '2026',
       services: ['Service one', 'Service two'],
       // Add two gallery images for the recommended three-image project page.
-      // You can add more; every image keeps the same universal 4:3 frame.
+      // You can add more. Images keep their natural proportions in the case study.
       gallery: [
         { src: 'project-image-02.jpg', alt: 'Project detail' },
         { src: 'project-image-03.jpg', alt: 'Project detail' }

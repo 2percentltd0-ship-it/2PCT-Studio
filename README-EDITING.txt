@@ -6,7 +6,9 @@ THE IMPORTANT FILES
 - content.js: portfolio categories, client names, email and all portfolio images
 - index.html: homepage text, services and studio overview
 - styles.css: colours, spacing, typography and layouts
-- script.js: category opening and navigation behaviour
+- home.js: homepage behaviour
+- portfolio.js: category and case-study page behaviour
+- portfolio.css: category and case-study layouts
 - robots.txt: crawler access rules and sitemap location
 - sitemap.xml: the public page address supplied to search engines
 
@@ -30,7 +32,7 @@ PORTFOLIO IMAGES
 - Every category has one independent cover image used only on the homepage.
 - Every category also contains six independent gallery images.
 - Every gallery image represents one independent project.
-- Clicking a project opens its own short case-study view.
+- Clicking a category or project opens a real subpage without a popup.
 - Categories and projects receive shareable links automatically.
 - The project's main src image is followed by the images inside its gallery list.
 - The other five gallery images fill the rows below it.
@@ -61,19 +63,26 @@ PORTFOLIO IMAGES
 - Use fit: 'cover' only when you intentionally want the image to fill and crop its frame.
 - slug is optional. When omitted, the website creates a unique link automatically.
 - The recommended project page uses one main src image plus two gallery images.
-- All opened project images use the same 4:3 frame on desktop and mobile.
+- Case-study images use one aligned content width and retain their natural proportions.
 - gallery is optional and may contain more than two images when a project needs them.
 - The included SVG files are temporary labelled placeholders showing which source belongs to each slot.
 
+CASE-STUDY TEXT
+- summary appears below the project title before the first large image.
+- approachTitle and approach appear after the first large image.
+- outcome is optional and appears near the end only when it contains real information.
+- year is optional and appears in the compact project details.
+- Empty optional sections are hidden automatically; visitors never see editing prompts.
+
 SHAREABLE LINKS
 - Open any category or project and copy the browser address.
-- Category example: https://www.2pctstudio.com/#work/packaging
-- Project example: https://www.2pctstudio.com/#work/packaging/redfood-nature
+- Category example: https://www.2pctstudio.com/work/packaging/
+- Project example: https://www.2pctstudio.com/work/packaging/redfood-nature-1/
 - Use category links in broad outreach and project links when one case is especially relevant.
 
 RECOMMENDED IMAGE SIZES
 - Homepage cover: 1600 x 1200 px (4:3)
-- Opened project images: 1600 x 1200 px (4:3)
+- Opened project images: 1600–2400 px wide; natural proportions are preserved.
 - Larger files are accepted; these dimensions are practical quality targets, not strict limits.
 
 CATEGORY CONTENT

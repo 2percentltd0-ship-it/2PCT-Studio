@@ -1,0 +1,69 @@
+const config = window.SITE_CONTENT;
+const categories = config.categories;
+const order = Object.keys(categories);
+const root = document.querySelector('#portfolio-content');
+const esc = value => String(value ?? '').replace(/[&"'<>]/g, c => ({'&':'&amp;','"':'&quot;',"'":'&#39;','<':'&lt;','>':'&gt;'}[c]));
+const slugify = value => String(value || 'project').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+const projectSlug = (project, index) => project.slug || `${slugify(project.title || project.company || 'project')}-${index + 1}`;
+const projectTitle = (project, index) => project.title || project.company || `Project ${index + 1}`;
+const image = (asset, category, loading='lazy') => `<img src="${esc(asset.src)}" alt="${esc(asset.alt || `${category.title} — ${asset.company || category.companies.join(' · ')}`)}" loading="${loading}" style="object-fit:${esc(asset.fit || 'contain')};object-position:${esc(asset.position || 'center')}">`;
+const parts = location.pathname.split('/').filter(Boolean);
+const categoryKey = parts[1];
+const projectPath = parts[2];
+const category = categories[categoryKey];
+
+const logoSource = window.STUDIO_LOGO_SVG ? `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(window.STUDIO_LOGO_SVG)}` : config.brand.logo;
+document.documentElement.style.setProperty('--studio-logo', `url(${JSON.stringify(logoSource)})`);
+
+function workPage() {
+  document.title = 'Selected work — 2 Percent';
+  root.innerHTML = `<section class="category-hero work-hero"><a class="text-back" href="/">← Home</a><p class="eyebrow">Selected work</p><div class="category-intro"><h1>Different challenges.<br>Distinct visual answers.</h1><p>Explore our work by design focus.</p></div></section><section class="category-projects work-categories">${Object.entries(categories).map(([key,item])=>`<a class="category-card" href="/work/${key}/"><figure>${image(item.cover,item)}</figure><div><h2>${esc(item.title)}</h2><p>${esc(item.companies.join(' · '))}</p></div></a>`).join('')}</section>`;
+}
+
+function categoryPage() {
+  const categoryIndex = order.indexOf(categoryKey);
+  const previous = order[(categoryIndex - 1 + order.length) % order.length];
+  const next = order[(categoryIndex + 1) % order.length];
+  document.title = `${category.title} — 2 Percent`;
+  root.innerHTML = `<section class="category-hero"><a class="text-back" href="/#work">← All work</a><p class="eyebrow">${esc(category.index)} · Design focus</p><div class="category-intro"><h1>${esc(category.title)}</h1><div><p>${esc(category.lead)}</p><ul>${category.capabilities.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div></section>
+  <section class="category-projects" aria-label="${esc(category.title)} projects">${category.images.map((project,index)=>`<a class="category-card" href="/work/${categoryKey}/${projectSlug(project,index)}/"><figure>${image(project,category)}</figure><div><h2>${esc(projectTitle(project,index))}</h2><p>${esc(project.company || 'Client name')}</p></div></a>`).join('')}</section>
+  <nav class="section-pagination" aria-label="Category navigation"><a href="/work/${previous}/">← ${esc(categories[previous].title)}</a><a href="/work/${next}/">${esc(categories[next].title)} →</a></nav>`;
+}
+
+function projectPage(project, index) {
+  const previousIndex = (index - 1 + category.images.length) % category.images.length;
+  const nextIndex = (index + 1) % category.images.length;
+  const previous = category.images[previousIndex], next = category.images[nextIndex];
+  const title = projectTitle(project,index);
+  const allImages = [project, ...(project.gallery || [])];
+  const meta = [project.company && ['Client',project.company], project.services?.length && ['Services',project.services.join(', ')], project.market && ['Market',project.market], project.year && ['Year',project.year]].filter(Boolean);
+  document.title = `${title} — ${category.title} — 2 Percent`;
+  root.innerHTML = `<article class="case-study"><header class="case-hero"><a class="text-back" href="/work/${categoryKey}/">← ${esc(category.title)}</a><p class="eyebrow">${esc(category.title)} · ${String(index+1).padStart(2,'0')} / ${String(category.images.length).padStart(2,'0')}</p><h1>${esc(title)}</h1><p class="case-intro">${esc(project.summary || category.lead)}</p>${meta.length ? `<dl class="case-meta">${meta.map(([label,value])=>`<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl>` : ''}</header>
+  <figure class="case-image case-image-hero">${image(allImages[0],category,'eager')}</figure>
+  ${project.approach ? `<section class="case-copy"><p class="eyebrow">The solution</p><h2>${esc(project.approachTitle || 'The approach')}</h2><p>${esc(project.approach)}</p></section>` : ''}
+  ${allImages.length > 1 ? `<div class="case-image-grid">${allImages.slice(1,3).map(asset=>`<figure class="case-image">${image(asset,category)}</figure>`).join('')}</div>` : ''}
+  ${allImages.length > 3 ? `<div class="case-image-stack">${allImages.slice(3).map(asset=>`<figure class="case-image">${image(asset,category)}</figure>`).join('')}</div>` : ''}
+  ${project.outcome ? `<section class="case-copy case-outcome"><p class="eyebrow">Outcome</p><p>${esc(project.outcome)}</p></section>` : ''}
+  <nav class="project-pagination" aria-label="Project navigation"><a href="/work/${categoryKey}/${projectSlug(previous,previousIndex)}/"><span>Previous project</span><strong>← ${esc(projectTitle(previous,previousIndex))}</strong></a><a href="/work/${categoryKey}/${projectSlug(next,nextIndex)}/"><span>Next project</span><strong>${esc(projectTitle(next,nextIndex))} →</strong></a></nav><a class="case-contact" href="/#contact">Start a project ↗</a></article>`;
+
+  let touchStart = null;
+  root.addEventListener('touchstart', event => { if (event.touches.length === 1) touchStart = {x:event.touches[0].clientX,y:event.touches[0].clientY}; }, {passive:true});
+  root.addEventListener('touchend', event => {
+    if (!touchStart || event.changedTouches.length !== 1) return;
+    const dx=event.changedTouches[0].clientX-touchStart.x, dy=event.changedTouches[0].clientY-touchStart.y; touchStart=null;
+    if (Math.abs(dx)<90 || Math.abs(dx)<Math.abs(dy)*1.6) return;
+    location.href = dx < 0 ? `/work/${categoryKey}/${projectSlug(next,nextIndex)}/` : `/work/${categoryKey}/${projectSlug(previous,previousIndex)}/`;
+  }, {passive:true});
+}
+
+if (parts.length === 1) workPage();
+else if (!category) { root.innerHTML='<section class="not-found"><h1>Project not found.</h1><a href="/work/">← All work</a></section>'; }
+else if (!projectPath) categoryPage();
+else {
+  const index = category.images.findIndex((project,i)=>projectSlug(project,i)===projectPath);
+  if (index < 0) categoryPage(); else projectPage(category.images[index],index);
+}
+
+const toggle=document.querySelector('.menu-toggle'), nav=document.querySelector('.site-header nav');
+toggle?.addEventListener('click',()=>{const open=toggle.classList.toggle('active');nav.classList.toggle('open',open);toggle.setAttribute('aria-expanded',String(open));});
+document.querySelector('#year').textContent=new Date().getFullYear();
