@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://two-percent-design-studio.workspace-628039.chatgpt.site/sitemap.xml
+Sitemap: https://www.2pctstudio.com/sitemap.xml
