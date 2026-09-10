@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="2 Percent helps businesses communicate more clearly through strategic brand identity, campaigns, digital, packaging, editorial and event design.">
+  <link rel="canonical" href="https://www.2pctstudio.com/">
+  <meta property="og:title" content="2 Percent — Independent Design Studio">
+  <meta property="og:description" content="Strategic brand identity, campaigns, digital, packaging, editorial and event design.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.2pctstudio.com/">
+  <meta property="og:image" content="https://www.2pctstudio.com/portfolio-contact-sheet.png">
   <title>2 Percent — Independent Design Studio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -90,6 +96,14 @@
         </button>
         <span class="copy-email-status" role="status" aria-live="polite"></span>
       </div>
+      <form class="contact-form reveal" aria-label="Start a project">
+        <label><span>Name</span><input name="name" autocomplete="name" required></label>
+        <label><span>Company</span><input name="company" autocomplete="organization"></label>
+        <label><span>Email</span><input name="email" type="email" autocomplete="email" required></label>
+        <label class="contact-form-wide"><span>What do you need?</span><textarea name="brief" rows="4" required placeholder="Tell us a little about the project, timing and deliverables."></textarea></label>
+        <button class="contact-submit" type="submit">Send project inquiry</button>
+        <p class="contact-form-note">This opens a prepared email in your preferred mail app.</p>
+      </form>
       <div class="contact-foot"><span>Sofia · Bulgaria · Working worldwide</span><span>Available for selected projects</span></div>
     </section>
   </main>
@@ -100,12 +114,13 @@
     <button class="dialog-close" type="button" aria-label="Close category">Close <span>×</span></button>
     <div class="case-shell">
       <aside class="case-info">
+        <button class="project-back" type="button" hidden><span>←</span> Back to category</button>
         <p class="case-index"></p>
         <p class="case-category">Design focus</p>
         <h2 id="case-title"></h2>
         <p class="case-lead"></p>
-        <div class="case-list"><span>Selected work</span><ul class="case-companies"></ul></div>
-        <div class="case-list"><span>What this can include</span><ul class="case-capabilities"></ul></div>
+        <div class="case-list"><span class="case-details-label">Selected projects</span><ul class="case-companies"></ul></div>
+        <div class="case-list"><span class="case-capabilities-label">What this can include</span><ul class="case-capabilities"></ul></div>
         <div class="case-actions">
           <button class="next-project" type="button">Next category <span>→</span></button>
           <p class="swipe-hint" aria-hidden="true"><span>←</span> Swipe left / right <span>→</span></p>

@@ -3,10 +3,21 @@
   All portfolio categories, client names, text and image slots live here.
 
   Every category has one homepage cover and six gallery images.
-  Every image has its own editable source and company label.
+  Every image represents one project and can also hold optional case-study details.
   A source can be a local filename or a full https:// link:
   images: [
-    { src: 'project-cover.jpg', company: 'Client name', position: 'center', fit: 'contain' },
+    {
+      src: 'project-cover.jpg',
+      company: 'Client name',
+      title: 'Project title',
+      slug: 'short-project-link',
+      industry: 'Industry',
+      market: 'Germany',
+      summary: 'A short explanation of the challenge and design solution.',
+      services: ['Service one', 'Service two'],
+      gallery: [], // Optional extra images for the opened project.
+      position: 'center', fit: 'contain'
+    },
     { src: 'https://example.com/project-detail.jpg', company: 'Client name', position: 'center', fit: 'contain' }
   ]
 */
