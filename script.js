@@ -139,6 +139,7 @@ function openCategory(key, updateRoute = false) {
   if (!item) return;
   activeCategory = key;
   activeProject = null;
+  dialog.classList.remove('project-view');
   dialog.querySelector('.project-back').hidden = true;
   dialog.querySelector('.case-index').textContent = item.index;
   dialog.querySelector('.case-category').textContent = 'Design focus';
@@ -154,6 +155,7 @@ function openCategory(key, updateRoute = false) {
   enableGalleryFocus(gallery);
   bindProjectLinks(gallery, key);
   dialog.querySelector('.next-project').hidden = false;
+  dialog.querySelector('.project-nav').hidden = true;
   dialog.querySelector('.swipe-hint').hidden = false;
   if (!dialog.open) dialog.showModal();
   document.body.classList.add('modal-open');
@@ -170,6 +172,7 @@ function openProject(key, index, updateRoute = false) {
   if (!project) return;
   activeCategory = key;
   activeProject = index;
+  dialog.classList.add('project-view');
   const title = projectTitle(project, index);
   const details = [
     project.company && `Client: ${project.company}`,
@@ -177,21 +180,22 @@ function openProject(key, index, updateRoute = false) {
     project.market && `Market: ${project.market}`
   ].filter(Boolean);
   const services = project.services?.length ? project.services : item.capabilities;
-  const projectImages = project.gallery?.length ? project.gallery : [project];
+  const projectImages = [project, ...(project.gallery || [])];
   dialog.querySelector('.project-back').hidden = false;
   dialog.querySelector('.case-index').textContent = `${String(index + 1).padStart(2, '0')} / ${String(item.images.length).padStart(2, '0')}`;
   dialog.querySelector('.case-category').textContent = item.title;
   dialog.querySelector('#case-title').textContent = title;
-  dialog.querySelector('.case-lead').textContent = project.summary || 'Add a short explanation of the challenge, the thinking behind the design and the final solution in content.js.';
+  dialog.querySelector('.case-lead').textContent = project.summary || item.lead;
   dialog.querySelector('.case-details-label').textContent = 'Project details';
   dialog.querySelector('.case-capabilities-label').textContent = 'Services';
   dialog.querySelector('.case-companies').innerHTML = (details.length ? details : [`Client: ${project.company || 'Client name'}`]).map(detail => `<li>${escapeAttribute(detail)}</li>`).join('');
   dialog.querySelector('.case-capabilities').innerHTML = services.map(service => `<li>${escapeAttribute(service)}</li>`).join('');
   const gallery = dialog.querySelector('.case-visuals');
-  gallery.innerHTML = projectImages.map((image, imageIndex) => `<figure class="${imageIndex === 0 ? 'visual-hero' : ''}">${imageMarkup(image, item, imageIndex === 0 ? 'eager' : 'lazy')}</figure>`).join('');
+  gallery.innerHTML = `<div class="project-gallery">${projectImages.map((image, imageIndex) => `<figure>${imageMarkup(image, item, imageIndex === 0 ? 'eager' : 'lazy')}</figure>`).join('')}</div>`;
   enableGalleryFocus(gallery);
   dialog.querySelector('.next-project').hidden = true;
-  dialog.querySelector('.swipe-hint').hidden = true;
+  dialog.querySelector('.project-nav').hidden = false;
+  dialog.querySelector('.swipe-hint').hidden = false;
   if (!dialog.open) dialog.showModal();
   document.body.classList.add('modal-open');
   dialog.querySelector('.case-info').scrollTop = 0;
@@ -199,6 +203,16 @@ function openProject(key, index, updateRoute = false) {
   caseShell.scrollTop = 0;
   document.title = `${title} — ${item.title} — 2 Percent`;
   if (updateRoute) setRoute(projectRoute(key, project, index));
+}
+
+function moveProject(step, direction) {
+  const projects = categories[activeCategory]?.images || [];
+  if (!projects.length || activeProject === null) return;
+  const nextIndex = (activeProject + step + projects.length) % projects.length;
+  openProject(activeCategory, nextIndex, true);
+  caseShell.classList.remove('swipe-from-left', 'swipe-from-right');
+  void caseShell.offsetWidth;
+  caseShell.classList.add(direction === 'left' ? 'swipe-from-right' : 'swipe-from-left');
 }
 
 function moveCategory(step, direction) {
@@ -285,21 +299,6 @@ if (copyEmailButton) {
   });
 }
 
-const contactForm = document.querySelector('.contact-form');
-contactForm?.addEventListener('submit', event => {
-  event.preventDefault();
-  const form = new FormData(contactForm);
-  const subject = `Project inquiry from ${form.get('company') || form.get('name')}`;
-  const body = [
-    `Name: ${form.get('name')}`,
-    `Company: ${form.get('company') || '—'}`,
-    `Email: ${form.get('email')}`,
-    '',
-    String(form.get('brief'))
-  ].join('\n');
-  window.location.href = `mailto:${config.brand.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-});
-
 dialog.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
 dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
 dialog.addEventListener('close', () => {
@@ -314,6 +313,8 @@ dialog.addEventListener('close', () => {
 });
 dialog.querySelector('.project-back').addEventListener('click', () => openCategory(activeCategory, true));
 dialog.querySelector('.next-project').addEventListener('click', () => moveCategory(1, 'left'));
+dialog.querySelector('.previous-case').addEventListener('click', () => moveProject(-1, 'right'));
+dialog.querySelector('.next-case').addEventListener('click', () => moveProject(1, 'left'));
 dialog.querySelector('.case-actions a').addEventListener('click', () => dialog.close());
 
 caseShell.addEventListener('touchstart', event => {
@@ -335,7 +336,10 @@ caseShell.addEventListener('touchend', event => {
 
   // Require a deliberate horizontal gesture so normal gallery scrolling remains natural.
   if (Math.abs(deltaX) < 64 || Math.abs(deltaX) < Math.abs(deltaY) * 1.25) return;
-  if (deltaX < 0) moveCategory(1, 'left');
+  if (activeProject !== null) {
+    if (deltaX < 0) moveProject(1, 'left');
+    else moveProject(-1, 'right');
+  } else if (deltaX < 0) moveCategory(1, 'left');
   else moveCategory(-1, 'right');
 }, { passive: true });
 

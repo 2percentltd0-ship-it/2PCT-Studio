@@ -32,7 +32,7 @@ PORTFOLIO IMAGES
 - Every gallery image represents one independent project.
 - Clicking a project opens its own short case-study view.
 - Categories and projects receive shareable links automatically.
-- The first gallery image is the large image shown after opening.
+- The project's main src image is followed by the images inside its gallery list.
 - The other five gallery images fill the rows below it.
 - rows controls only how many detail images appear on each row. The values must total 5.
 - Example: rows: [2, 1, 2] means two images, one full-width image, then two images.
@@ -50,14 +50,19 @@ PORTFOLIO IMAGES
   market: 'Germany'
   summary: 'A short explanation of the challenge and solution.'
   services: ['Packaging design', 'Production artwork']
-  gallery: [{ src: 'images/packaging/project-detail.jpg', company: 'Client name' }]
+  gallery: [
+    { src: 'images/packaging/project-02.jpg', alt: 'Project detail' },
+    { src: 'images/packaging/project-03.jpg', alt: 'Project detail' }
+  ]
   position: 'center'
   fit: 'contain'
 - You may also use a complete online source: src: 'https://example.com/image.jpg'
 - Keep fit: 'contain' to show the complete image without cropping or stretching.
 - Use fit: 'cover' only when you intentionally want the image to fill and crop its frame.
 - slug is optional. When omitted, the website creates a unique link automatically.
-- gallery is optional. When omitted, the project cover is also used inside the case study.
+- The recommended project page uses one main src image plus two gallery images.
+- All opened project images use the same 4:3 frame on desktop and mobile.
+- gallery is optional and may contain more than two images when a project needs them.
 - The included SVG files are temporary labelled placeholders showing which source belongs to each slot.
 
 SHAREABLE LINKS
@@ -68,10 +73,7 @@ SHAREABLE LINKS
 
 RECOMMENDED IMAGE SIZES
 - Homepage cover: 1600 x 1200 px (4:3)
-- First opened image: 1920 x 1080 px (16:9)
-- Standard wide image: 1600 x 900 px (16:9)
-- Standard compact image: 1200 x 900 px (4:3)
-- Panoramic image: approximately 2000 x 650 px
+- Opened project images: 1600 x 1200 px (4:3)
 - Larger files are accepted; these dimensions are practical quality targets, not strict limits.
 
 CATEGORY CONTENT
