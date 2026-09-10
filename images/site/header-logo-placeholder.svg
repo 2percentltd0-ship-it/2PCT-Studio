@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
-  <title id="title">Header logo placeholder</title>
-  <desc id="desc">Square logo placeholder measuring 512 by 512 pixels.</desc>
-  <rect width="512" height="512" fill="#273840"/>
-  <rect x="18" y="18" width="476" height="476" fill="none" stroke="#dce6e9" stroke-width="4"/>
-  <path d="M18 18 494 494M494 18 18 494" stroke="#b8cdd3" stroke-width="2" opacity=".32"/>
-  <text x="256" y="235" fill="#fff" font-family="Arial, sans-serif" font-size="70" font-weight="700" text-anchor="middle">LOGO</text>
-  <text x="256" y="295" fill="#dce6e9" font-family="Arial, sans-serif" font-size="38" letter-spacing="4" text-anchor="middle">512 × 512 PX</text>
-</svg>
