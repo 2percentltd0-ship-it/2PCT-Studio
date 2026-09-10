@@ -29,6 +29,9 @@ Place each project according to the main business challenge it solves, not every
 PORTFOLIO IMAGES
 - Every category has one independent cover image used only on the homepage.
 - Every category also contains six independent gallery images.
+- Every gallery image represents one independent project.
+- Clicking a project opens its own short case-study view.
+- Categories and projects receive shareable links automatically.
 - The first gallery image is the large image shown after opening.
 - The other five gallery images fill the rows below it.
 - rows controls only how many detail images appear on each row. The values must total 5.
@@ -41,12 +44,27 @@ PORTFOLIO IMAGES
 - For every image, set:
   src: 'images/packaging/your-image.jpg'
   company: 'The client name shown over this image'
+  title: 'The project title'
+  slug: 'short-project-link'
+  industry: 'The client industry'
+  market: 'Germany'
+  summary: 'A short explanation of the challenge and solution.'
+  services: ['Packaging design', 'Production artwork']
+  gallery: [{ src: 'images/packaging/project-detail.jpg', company: 'Client name' }]
   position: 'center'
   fit: 'contain'
 - You may also use a complete online source: src: 'https://example.com/image.jpg'
 - Keep fit: 'contain' to show the complete image without cropping or stretching.
 - Use fit: 'cover' only when you intentionally want the image to fill and crop its frame.
+- slug is optional. When omitted, the website creates a unique link automatically.
+- gallery is optional. When omitted, the project cover is also used inside the case study.
 - The included SVG files are temporary labelled placeholders showing which source belongs to each slot.
+
+SHAREABLE LINKS
+- Open any category or project and copy the browser address.
+- Category example: https://www.2pctstudio.com/#work/packaging
+- Project example: https://www.2pctstudio.com/#work/packaging/redfood-nature
+- Use category links in broad outreach and project links when one case is especially relevant.
 
 RECOMMENDED IMAGE SIZES
 - Homepage cover: 1600 x 1200 px (4:3)
@@ -67,6 +85,7 @@ CONTACT
 - Change brand.email in content.js whenever needed.
 - Clicking the email opens a new message in the visitor's email application.
 - The icon beside the email copies the same address and briefly changes to a checkmark.
+- The short contact form prepares a structured email in the visitor's preferred mail application.
 
 LOGO
 - logo-2percent.png is the original supplied logo and has not been altered.
