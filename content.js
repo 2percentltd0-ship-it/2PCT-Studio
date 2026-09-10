@@ -15,7 +15,12 @@
       market: 'Germany',
       summary: 'A short explanation of the challenge and design solution.',
       services: ['Service one', 'Service two'],
-      gallery: [], // Optional extra images for the opened project.
+      // Add two gallery images for the recommended three-image project page.
+      // You can add more; every image keeps the same universal 4:3 frame.
+      gallery: [
+        { src: 'project-image-02.jpg', alt: 'Project detail' },
+        { src: 'project-image-03.jpg', alt: 'Project detail' }
+      ],
       position: 'center', fit: 'contain'
     },
     { src: 'https://example.com/project-detail.jpg', company: 'Client name', position: 'center', fit: 'contain' }
