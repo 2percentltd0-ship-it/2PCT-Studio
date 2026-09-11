@@ -17,6 +17,10 @@
       approachTitle: 'The idea behind the work',
       approach: 'A short explanation of the key creative decision and how the system works.',
       outcome: 'Optional real-world result or delivered outcome.',
+      occupation: 'Brand identity',
+      presentationLabel: 'Project in detail',
+      presentationTitle: 'How the system comes together',
+      presentation: 'A second text block placed after the first three images for additional context, applications or production details.',
       year: '2026',
       services: ['Service one', 'Service two'],
       // Add two gallery images for the recommended three-image project page.

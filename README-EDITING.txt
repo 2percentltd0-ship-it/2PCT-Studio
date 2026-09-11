@@ -51,6 +51,7 @@ PORTFOLIO IMAGES
   industry: 'The client industry'
   market: 'Germany'
   summary: 'A short explanation of the challenge and solution.'
+  occupation: 'Brand identity'
   services: ['Packaging design', 'Production artwork']
   gallery: [
     { src: 'images/packaging/project-02.jpg', alt: 'Project detail' },
@@ -70,6 +71,8 @@ PORTFOLIO IMAGES
 CASE-STUDY TEXT
 - summary appears below the project title before the first large image.
 - approachTitle and approach appear after the first large image.
+- occupation is the supporting information shown on cards and in the project details.
+- presentationLabel, presentationTitle and presentation create the text block after the first three images.
 - outcome is optional and appears near the end only when it contains real information.
 - year is optional and appears in the compact project details.
 - Empty optional sections are hidden automatically; visitors never see editing prompts.
@@ -82,6 +85,7 @@ SHAREABLE LINKS
 
 RECOMMENDED IMAGE SIZES
 - Homepage cover: 1600 x 1200 px (4:3)
+- Category covers and empty project slots: 1600 x 1200 px (4:3).
 - Opened project images: 1600–2400 px wide; natural proportions are preserved.
 - Larger files are accepted; these dimensions are practical quality targets, not strict limits.
 
