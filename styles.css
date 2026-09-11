@@ -80,8 +80,6 @@ nav a, .header-cta { font-size: .82rem; font-weight: 600; text-transform: upperc
 .project-meta > span { display: grid; }
 .project-meta b { font: 600 clamp(1rem,1.35vw,1.3rem) "Manrope", sans-serif; letter-spacing: -.035em; }
 .project-meta small, .project-meta i { margin-top: .2rem; color: var(--muted); font-size: .78rem; font-style: normal; }
-.project-meta i { opacity: 0; transform: translateX(-8px); transition: .25s; }
-.project:hover .project-meta i, .project:focus-visible .project-meta i { opacity: 1; transform: none; }
 
 .expertise { background: var(--white); }
 .process-timeline { --timeline-start: 1.35rem; --timeline-end: 1.35rem; --timeline-progress: 0px; padding-top: .5rem; }

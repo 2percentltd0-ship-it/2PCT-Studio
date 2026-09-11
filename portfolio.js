@@ -17,7 +17,7 @@ document.documentElement.style.setProperty('--studio-logo', `url(${JSON.stringif
 
 function workPage() {
   document.title = 'Selected work — 2 Percent';
-  root.innerHTML = `<section class="category-hero work-hero"><a class="text-back" href="/">← Home</a><p class="eyebrow">Selected work</p><div class="category-intro"><h1>Different challenges.<br>Distinct visual answers.</h1><p>Explore our work by design focus.</p></div></section><section class="category-projects work-categories">${Object.entries(categories).map(([key,item])=>`<a class="category-card" href="/work/${key}/"><figure>${image(item.cover,item)}</figure><div><h2>${esc(item.title)}</h2><p>${esc(item.companies.join(' · '))}</p></div></a>`).join('')}</section>`;
+  root.innerHTML = `<section class="category-hero work-hero page-reveal"><a class="text-back" href="/"><span>‹</span> Home</a><p class="eyebrow">Selected work</p><div class="category-intro"><h1>Different challenges.<br>Distinct visual answers.</h1><p>Explore our work by design focus.</p></div></section><section class="category-projects work-categories">${Object.entries(categories).map(([key,item])=>`<a class="category-card page-reveal" href="/work/${key}/"><figure>${image(item.cover,item)}</figure><div><h2>${esc(item.title)}</h2><p>${esc(item.companies.join(' · '))}</p></div></a>`).join('')}</section>`;
 }
 
 function categoryPage() {
@@ -25,9 +25,9 @@ function categoryPage() {
   const previous = order[(categoryIndex - 1 + order.length) % order.length];
   const next = order[(categoryIndex + 1) % order.length];
   document.title = `${category.title} — 2 Percent`;
-  root.innerHTML = `<section class="category-hero"><a class="text-back" href="/#work">← All work</a><p class="eyebrow">${esc(category.index)} · Design focus</p><div class="category-intro"><h1>${esc(category.title)}</h1><div><p>${esc(category.lead)}</p><ul>${category.capabilities.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div></section>
-  <section class="category-projects" aria-label="${esc(category.title)} projects">${category.images.map((project,index)=>`<a class="category-card" href="/work/${categoryKey}/${projectSlug(project,index)}/"><figure>${image(project,category)}</figure><div><h2>${esc(projectTitle(project,index))}</h2><p>${esc(project.company || 'Client name')}</p></div></a>`).join('')}</section>
-  <nav class="section-pagination" aria-label="Category navigation"><a href="/work/${previous}/">← ${esc(categories[previous].title)}</a><a href="/work/${next}/">${esc(categories[next].title)} →</a></nav>`;
+  root.innerHTML = `<section class="category-hero page-reveal"><a class="text-back" href="/work/"><span>‹</span> All work</a><p class="eyebrow">${esc(category.index)} · Design focus</p><div class="category-intro"><h1>${esc(category.title)}</h1><div><p>${esc(category.lead)}</p><ul>${category.capabilities.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div></section>
+  <section class="category-projects" aria-label="${esc(category.title)} projects">${category.images.map((project,index)=>`<a class="category-card page-reveal" href="/work/${categoryKey}/${projectSlug(project,index)}/"><figure>${image(project,category)}</figure><div><h2>${esc(projectTitle(project,index))}</h2><p>${esc(project.occupation || project.industry || category.title)}</p></div></a>`).join('')}</section>
+  <nav class="section-pagination page-reveal" aria-label="Category navigation"><a href="/work/${previous}/"><span>‹</span>${esc(categories[previous].title)}</a><a href="/work/${next}/">${esc(categories[next].title)}<span>›</span></a></nav>`;
 }
 
 function projectPage(project, index) {
@@ -35,16 +35,19 @@ function projectPage(project, index) {
   const nextIndex = (index + 1) % category.images.length;
   const previous = category.images[previousIndex], next = category.images[nextIndex];
   const title = projectTitle(project,index);
-  const allImages = [project, ...(project.gallery || [])];
-  const meta = [project.company && ['Client',project.company], project.services?.length && ['Services',project.services.join(', ')], project.market && ['Market',project.market], project.year && ['Year',project.year]].filter(Boolean);
+  const suppliedImages = [project, ...(project.gallery || [])];
+  const firstThree = suppliedImages.slice(0,3);
+  while (firstThree.length < 3) firstThree.push(null);
+  const meta = [project.company && project.company !== title && ['Client',project.company], ['Discipline',project.occupation || project.industry || category.title], project.services?.length && ['Services',project.services.join(', ')], project.market && ['Market',project.market], project.year && ['Year',project.year]].filter(Boolean);
   document.title = `${title} — ${category.title} — 2 Percent`;
-  root.innerHTML = `<article class="case-study"><header class="case-hero"><a class="text-back" href="/work/${categoryKey}/">← ${esc(category.title)}</a><p class="eyebrow">${esc(category.title)} · ${String(index+1).padStart(2,'0')} / ${String(category.images.length).padStart(2,'0')}</p><h1>${esc(title)}</h1><p class="case-intro">${esc(project.summary || category.lead)}</p>${meta.length ? `<dl class="case-meta">${meta.map(([label,value])=>`<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl>` : ''}</header>
-  <figure class="case-image case-image-hero">${image(allImages[0],category,'eager')}</figure>
+  root.innerHTML = `<article class="case-study"><header class="case-hero page-reveal"><a class="text-back" href="/work/${categoryKey}/"><span>‹</span> ${esc(category.title)}</a><p class="eyebrow">${esc(category.title)} · ${String(index+1).padStart(2,'0')} / ${String(category.images.length).padStart(2,'0')}</p><h1>${esc(title)}</h1><p class="case-intro">${esc(project.summary || category.lead)}</p>${meta.length ? `<dl class="case-meta">${meta.map(([label,value])=>`<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl>` : ''}</header>
+  <figure class="case-image case-image-hero page-reveal">${image(firstThree[0],category,'eager')}</figure>
   ${project.approach ? `<section class="case-copy"><p class="eyebrow">The solution</p><h2>${esc(project.approachTitle || 'The approach')}</h2><p>${esc(project.approach)}</p></section>` : ''}
-  ${allImages.length > 1 ? `<div class="case-image-grid">${allImages.slice(1,3).map(asset=>`<figure class="case-image">${image(asset,category)}</figure>`).join('')}</div>` : ''}
-  ${allImages.length > 3 ? `<div class="case-image-stack">${allImages.slice(3).map(asset=>`<figure class="case-image">${image(asset,category)}</figure>`).join('')}</div>` : ''}
+  <div class="case-image-grid page-reveal">${firstThree.slice(1).map((asset,i)=>asset ? `<figure class="case-image">${image(asset,category)}</figure>` : `<figure class="case-image image-placeholder" aria-label="Project image placeholder"><span>Project image ${String(i+2).padStart(2,'0')}<small>1600 × 1200 px</small></span></figure>`).join('')}</div>
+  ${project.presentation ? `<section class="case-copy case-presentation page-reveal"><p class="eyebrow">${esc(project.presentationLabel || 'Project in detail')}</p><h2>${esc(project.presentationTitle || 'The complete visual expression')}</h2><p>${esc(project.presentation)}</p></section>` : ''}
+  ${suppliedImages.length > 3 ? `<div class="case-image-stack">${suppliedImages.slice(3).map(asset=>`<figure class="case-image">${image(asset,category)}</figure>`).join('')}</div>` : ''}
   ${project.outcome ? `<section class="case-copy case-outcome"><p class="eyebrow">Outcome</p><p>${esc(project.outcome)}</p></section>` : ''}
-  <nav class="project-pagination" aria-label="Project navigation"><a href="/work/${categoryKey}/${projectSlug(previous,previousIndex)}/"><span>Previous project</span><strong>← ${esc(projectTitle(previous,previousIndex))}</strong></a><a href="/work/${categoryKey}/${projectSlug(next,nextIndex)}/"><span>Next project</span><strong>${esc(projectTitle(next,nextIndex))} →</strong></a></nav><a class="case-contact" href="/#contact">Start a project ↗</a></article>`;
+  <nav class="project-pagination page-reveal" aria-label="Project navigation"><a href="/work/${categoryKey}/${projectSlug(previous,previousIndex)}/"><b>‹</b><span>Previous project</span><strong>${esc(projectTitle(previous,previousIndex))}</strong></a><a href="/work/${categoryKey}/${projectSlug(next,nextIndex)}/"><span>Next project</span><strong>${esc(projectTitle(next,nextIndex))}</strong><b>›</b></a></nav><a class="case-contact header-cta" href="/#contact"><span>Start a project</span></a></article>`;
 
   let touchStart = null;
   root.addEventListener('touchstart', event => { if (event.touches.length === 1) touchStart = {x:event.touches[0].clientX,y:event.touches[0].clientY}; }, {passive:true});
@@ -67,3 +70,10 @@ else {
 const toggle=document.querySelector('.menu-toggle'), nav=document.querySelector('.site-header nav');
 toggle?.addEventListener('click',()=>{const open=toggle.classList.toggle('active');nav.classList.toggle('open',open);toggle.setAttribute('aria-expanded',String(open));});
 document.querySelector('#year').textContent=new Date().getFullYear();
+const revealObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+  if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); }
+}), {threshold:.08});
+document.querySelectorAll('.page-reveal').forEach((element,index) => {
+  element.style.setProperty('--page-delay', `${Math.min(index,6)*55}ms`);
+  revealObserver.observe(element);
+});

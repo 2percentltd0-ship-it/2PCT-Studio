@@ -11,8 +11,8 @@ const image = (asset, category) => `<img src="${esc(asset.src)}" alt="${esc(asse
 
 grid.innerHTML = Object.entries(categories).map(([key, category]) => `
   <a class="project reveal" href="/work/${key}/">
-    <span class="project-art">${image(category.cover, category)}<span class="view-project">View work ↗</span></span>
-    <span class="project-meta"><span><b>${esc(category.title)}</b><small>${esc(category.companies.join(' · '))}</small></span><i>Open ↗</i></span>
+    <span class="project-art">${image(category.cover, category)}</span>
+    <span class="project-meta"><span><b>${esc(category.title)}</b><small>${esc(category.companies.join(' · '))}</small></span></span>
   </a>`).join('');
 
 document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
