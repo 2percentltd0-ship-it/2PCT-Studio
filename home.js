@@ -10,7 +10,7 @@ const esc = value => String(value).replace(/[&"'<>]/g, c => ({'&':'&amp;','"':'&
 const image = (asset, category) => `<img src="${esc(asset.src)}" alt="${esc(asset.alt || `${category.title} — ${asset.company || category.companies.join(' · ')}`)}" loading="lazy" style="object-fit:${esc(asset.fit || 'contain')};object-position:${esc(asset.position || 'center')}">`;
 
 grid.innerHTML = Object.entries(categories).map(([key, category]) => `
-  <a class="project reveal" href="/work/${key}/">
+  <a class="project reveal" href="work/${key}/index.html">
     <span class="project-art">${image(category.cover, category)}</span>
     <span class="project-meta"><span><b>${esc(category.title)}</b><small>${esc(category.companies.join(' · '))}</small></span></span>
   </a>`).join('');

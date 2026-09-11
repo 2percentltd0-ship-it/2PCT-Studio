@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <base href="/"><meta name="description" content="%%DESCRIPTION%%"><link rel="canonical" href="%%CANONICAL%%">
+  <meta name="description" content="%%DESCRIPTION%%"><link rel="canonical" href="%%CANONICAL%%">
   <meta property="og:title" content="%%TITLE%%"><meta property="og:description" content="%%DESCRIPTION%%"><meta property="og:type" content="website"><meta property="og:url" content="%%CANONICAL%%">
   <title>%%TITLE%%</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="portfolio.css">
+  <link rel="stylesheet" href="%%ROOT%%styles.css"><link rel="stylesheet" href="%%ROOT%%portfolio.css">
 </head>
-<body class="portfolio-page">
-  <header class="site-header"><a class="brand" href="/" aria-label="2 Percent home"><span class="shared-logo" aria-hidden="true"></span></a><nav aria-label="Main navigation"><a href="/work/">Work</a><a href="/#expertise">The solution</a><a href="/#studio">Studio</a></nav><a class="header-cta" href="/#contact"><span>Start a project</span></a><button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button></header>
+<body class="portfolio-page" data-root="%%ROOT%%" data-category="%%CATEGORY%%" data-project="%%PROJECT%%">
+  <header class="site-header"><a class="brand" href="%%ROOT%%index.html" aria-label="2 Percent home"><span class="shared-logo" aria-hidden="true"></span></a><nav aria-label="Main navigation"><a href="%%ROOT%%work/index.html">Work</a><a href="%%ROOT%%index.html#expertise">The solution</a><a href="%%ROOT%%index.html#studio">Studio</a></nav><a class="header-cta" href="%%ROOT%%index.html#contact"><span>Start a project</span></a><button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button></header>
   <main id="portfolio-content"></main>
   <footer><div class="footer-brand" role="img" aria-label="2 Percent"><span class="shared-logo" aria-hidden="true"></span></div><p>Independent graphic design studio.</p><p>© <span id="year"></span> 2 Percent</p></footer>
-  <script src="content.js"></script><script src="images/site/studio-logo-data.js"></script><script src="portfolio.js"></script>
+  <script src="%%ROOT%%content.js"></script><script src="%%ROOT%%images/site/studio-logo-data.js"></script><script src="%%ROOT%%portfolio.js"></script>
 </body></html>

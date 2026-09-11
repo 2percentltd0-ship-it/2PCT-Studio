@@ -1,6 +1,10 @@
 2 PERCENT WEBSITE — EDITING GUIDE
 
-Open index.html in a browser to view the website locally.
+OFFLINE USE
+- Extract the complete ZIP archive first.
+- Open the root index.html file in Chrome, Edge or Firefox.
+- Keep the folder structure unchanged: work and images must stay beside index.html.
+- Pages, images and navigation work directly from the extracted folder. The preferred Google fonts need internet access; without it, the browser uses its sans-serif fallback.
 
 THE IMPORTANT FILES
 - content.js: portfolio categories, client names, email and all portfolio images
@@ -103,7 +107,6 @@ CONTACT
 - The short contact form prepares a structured email in the visitor's preferred mail application.
 
 LOGO
-- logo-2percent.png is the original supplied logo and has not been altered.
 - The active logo is images/site/studio-logo.svg, copied unchanged from your supplied vector file.
 - Change only brand.logo in content.js to update the header, footer and hero together.
 - Use a local transparent, single-colour SVG with outlined paths, not an embedded bitmap or a background rectangle.
