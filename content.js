@@ -46,15 +46,29 @@ window.SITE_CONTENT = {
     // CATEGORY 1 — Edit the text, clients and six image sources below.
     branding: {
       index: '01 / 06', title: 'Brand & Identity',
-      companies: ['Marienfelder Grillhaus'],
+      companies: ["Al Shira'aa"],
       lead: 'We help businesses become more recognisable, consistent and easier to trust across every customer touchpoint.',
       capabilities: ['Brand strategy & positioning', 'Visual identity systems', 'Art direction', 'Brand guidelines & rollout'],
-      cover: { src: 'images/branding/cover.png', company: 'Marienfelder Grillhaus', position: 'center', fit: 'contain' },
+      cover: { src: 'images/branding/al-shiraa-cover.png', company: "Al Shira'aa", position: 'center', fit: 'contain' },
       // Detail images per row. The five values after the hero are grouped 2 + 1 + 2.
       rows: [2, 1, 2],
       images: [
         // First gallery image = large image at the top after opening.
-        { src: 'images/branding/01.svg', company: 'Marienfelder Grillhaus', position: 'center', fit: 'contain' },
+        {
+          src: 'images/branding/al-shiraa-01.png',
+          coverSrc: 'images/branding/al-shiraa-cover.png',
+          company: "Al Shira'aa",
+          title: "Al Shira'aa",
+          slug: 'al-shiraa',
+          sector: 'Equestrian Sport · Horse Breeding · International Events',
+          summary: "From Al Shira'aa to Al Shira'aa Farms and Al Shira'aa Tour, we led the visual evolution of a unified equestrian brand system—creating a consistent and recognisable identity across international events and every brand touchpoint.",
+          gallery: [
+            { src: 'images/branding/al-shiraa-03.png', alt: "Al Shira'aa Farms identity" },
+            { src: 'images/branding/al-shiraa-02.png', alt: "Al Shira'aa Tour visual identity system" }
+          ],
+          position: 'center',
+          fit: 'contain'
+        },
         { src: 'images/branding/02.svg', company: 'Marienfelder Grillhaus', position: 'center', fit: 'contain' },
         { src: 'images/branding/03.svg', company: 'Marienfelder Grillhaus', position: 'center', fit: 'contain' },
         { src: 'images/branding/04.svg', company: 'Marienfelder Grillhaus', position: 'center', fit: 'contain' },
