@@ -159,22 +159,22 @@ window.SITE_CONTENT = {
             cover: 'images/packaging/cover-soma.webp', image1: 'images/packaging/soma-01.webp', image2: 'images/packaging/soma-02.webp', image3: 'images/packaging/soma-03.webp'
         }),
         portfolioProject({
-            title: 'RUMMY wooden game', company: 'LOGOPLAY Holzspiele', slug: 'daily-wellness-packaging',
-            sector: 'Games & Entertainment',
-            summary: 'A refreshed packaging direction for LOGOPLAY’s handcrafted wooden Rummy game, combining the warmth of a traditional family game with a clear, contemporary retail presence. Multiple compositions were explored to showcase the wooden racks, playing tiles and textile storage bag while preserving the product’s authentic and long-lasting character.',
-            cover: 'images/packaging/03.webp', image1: 'images/packaging/03.webp', image2: 'images/packaging/03.webp', image3: 'images/packaging/03.webp'
+            title: 'Cellular Miracle Mix', company: 'Energized Health', slug: 'daily-wellness-packaging',
+            sector: 'Health & Wellness · Physical Fitness',
+            summary: 'A bold packaging system for Cellular Miracle Mix, a cellular support formula designed to promote vitality and overall well-being. Dynamic typography, strong visual hierarchy and energetic color contrasts create a confident and recognizable presence. Distinct color coding and ingredient imagery differentiate each flavor while maintaining a consistent identity across the complete product range.',
+            cover: 'images/packaging/cover-miracle.webp', image1: 'images/packaging/miracle-01.webp', image2: 'images/packaging/miracle-02.webp', image3: 'images/packaging/miracle-03.webp'
         }),
         portfolioProject({
-          title: 'Tea Label Collection', company: 'Cuxhavener Teekontor', slug: 'tea-label-collection',
-          sector: 'Tea · Specialty Retail · Food & Beverage',
-          summary: 'A modern label collection combining product distinction, natural cues and consistent shelf recognition across multiple varieties.',
-            cover: 'images/packaging/04.webp', image1: 'images/packaging/04.webp', image2: 'images/packaging/04.webp', image3: 'images/packaging/04.webp'
+            title: 'Herbal Tea Sampler Gift Set', company: 'Green Valley Herbal Tea Company', slug: 'tea-label-collection',
+            sector: 'Food & Beverage · AOrganic Retail',
+            summary: 'A complete packaging concept for Green Valley Herbal Tea Company’s organic tea sampler gift set. The design combines delicate botanical details, watercolor mountain scenery and a warm natural colour palette inspired by the teas’ Colorado origin. Individual colour-coded envelopes make each blend easy to identify, while the premium gift box brings the collection together in a calm, refined and cohesive presentation.',
+            cover: 'images/packaging/cover-green-valley.webp', image1: 'images/packaging/green-valley-01.webp', image2: 'images/packaging/0green-valley-02.webp', image3: 'images/packaging/green-valley-03.webp'
         }),
         portfolioProject({
-          title: 'Artisan Tea Packaging', company: 'Cuxhavener Teekontor', slug: 'artisan-tea-packaging',
-          sector: 'Artisan Food · Retail · Gift Products',
-          summary: 'A refined packaging expression that gives an artisan tea assortment a stronger sense of quality and collectable character.',
-            cover: 'images/packaging/05.webp', image1: 'images/packaging/05.webp', image2: 'images/packaging/05.webp', image3: 'images/packaging/05.webp'
+            title: 'West Winds 12 Year Old Single Malt Whisky', company: 'The West Winds Distillers', slug: 'artisan-tea-packaging',
+            sector: 'Food & Drink',
+            summary: 'A premium label design for a limited-edition Australian 12 Year Old Single Malt Whisky matured in bourbon casks. The intricate die-cut composition combines rich charcoal tones, copper detailing and expressive typography to communicate rarity, craftsmanship and provenance. Embossed elements, metallic finishes and individually numbered details create a tactile, collectible presentation while allowing the whisky itself to remain the visual focus.',
+            cover: 'images/packaging/cover-west-winds.webp', image1: 'images/packaging/west-winds-01.webp', image2: 'images/packaging/0west-winds-02.webp', image3: 'images/packaging/west-winds-03.webp'
         }),
         portfolioProject({
           title: 'Limited Edition Product', company: 'Client Name', slug: 'limited-edition-product',
