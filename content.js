@@ -168,7 +168,7 @@ window.SITE_CONTENT = {
             title: 'Herbal Tea Sampler Gift Set', company: 'Green Valley Herbal Tea Company', slug: 'tea-label-collection',
             sector: 'Food & Beverage · AOrganic Retail',
             summary: 'A complete packaging concept for Green Valley Herbal Tea Company’s organic tea sampler gift set. The design combines delicate botanical details, watercolor mountain scenery and a warm natural colour palette inspired by the teas’ Colorado origin. Individual colour-coded envelopes make each blend easy to identify, while the premium gift box brings the collection together in a calm, refined and cohesive presentation.',
-            cover: 'images/packaging/cover-green-valley.webp', image1: 'images/packaging/green-valley-01.webp', image2: 'images/packaging/0green-valley-02.webp', image3: 'images/packaging/green-valley-03.webp'
+            cover: 'images/packaging/cover-green-valley.webp', image1: 'images/packaging/green-valley-01.webp', image2: 'images/packaging/green-valley-02.webp', image3: 'images/packaging/green-valley-03.webp'
         }),
         portfolioProject({
             title: 'West Winds 12 Year Old Single Malt Whisky', company: 'The West Winds Distillers', slug: 'artisan-tea-packaging',
