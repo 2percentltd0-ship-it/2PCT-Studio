@@ -174,7 +174,7 @@ window.SITE_CONTENT = {
             title: 'West Winds 12 Year Old Single Malt Whisky', company: 'The West Winds Distillers', slug: 'artisan-tea-packaging',
             sector: 'Food & Drink',
             summary: 'A premium label design for a limited-edition Australian 12 Year Old Single Malt Whisky matured in bourbon casks. The intricate die-cut composition combines rich charcoal tones, copper detailing and expressive typography to communicate rarity, craftsmanship and provenance. Embossed elements, metallic finishes and individually numbered details create a tactile, collectible presentation while allowing the whisky itself to remain the visual focus.',
-            cover: 'images/packaging/cover-west-winds.webp', image1: 'images/packaging/west-winds-01.webp', image2: 'images/packaging/0west-winds-02.webp', image3: 'images/packaging/west-winds-03.webp'
+            cover: 'images/packaging/cover-west-winds.webp', image1: 'images/packaging/west-winds-01.webp', image2: 'images/packaging/west-winds-02.webp', image3: 'images/packaging/west-winds-03.webp'
         }),
         portfolioProject({
           title: 'Limited Edition Product', company: 'Client Name', slug: 'limited-edition-product',
