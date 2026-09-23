@@ -166,7 +166,7 @@ window.SITE_CONTENT = {
         }),
         portfolioProject({
             title: 'Herbal Tea Sampler Gift Set', company: 'Green Valley Herbal Tea Company', slug: 'tea-label-collection',
-            sector: 'Food & Beverage · AOrganic Retail',
+            sector: 'Food & Beverage · Organic Retail',
             summary: 'A complete packaging concept for Green Valley Herbal Tea Company’s organic tea sampler gift set. The design combines delicate botanical details, watercolor mountain scenery and a warm natural colour palette inspired by the teas’ Colorado origin. Individual colour-coded envelopes make each blend easy to identify, while the premium gift box brings the collection together in a calm, refined and cohesive presentation.',
             cover: 'images/packaging/cover-green-valley.webp', image1: 'images/packaging/green-valley-01.webp', image2: 'images/packaging/green-valley-02.webp', image3: 'images/packaging/green-valley-03.webp'
         }),
@@ -177,10 +177,10 @@ window.SITE_CONTENT = {
             cover: 'images/packaging/cover-west-winds.webp', image1: 'images/packaging/west-winds-01.webp', image2: 'images/packaging/west-winds-02.webp', image3: 'images/packaging/west-winds-03.webp'
         }),
         portfolioProject({
-          title: 'Limited Edition Product', company: 'Client Name', slug: 'limited-edition-product',
-          sector: 'Premium Goods · Seasonal Retail · Gifting',
-          summary: 'A limited-edition packaging concept designed to feel distinctive, giftable and clearly connected to the core brand.',
-          cover: 'images/packaging/06.svg', image1: 'images/packaging/06.svg', image2: 'images/packaging/06.svg', image3: 'images/packaging/06.svg'
+            title: 'Single Vineyard Nebbiolo', company: 'Everton Hills Estate', slug: 'limited-edition-product',
+            sector: 'Wine & Spirits',
+            summary: 'A distinctive label design created for the first release of Everton Hills Estate’s Single Vineyard Nebbiolo from Beechworth, Australia. The concept combines layered textured papers, torn edges and refined gold detailing to express the vineyard’s heritage through a contemporary and unexpected visual language. The warm natural palette and tactile materials reinforce the wine’s premium positioning, while the unconventional label construction gives the bottle a memorable presence on shelf.',
+            cover: 'images/packaging/cover-everton-hills.webp', image1: 'images/packaging/everton-hills-01.webp', image2: 'images/packaging/everton-hills-02.webp', image3: 'images/packaging/everton-hills-03.webp'
         })
       ]
     },
@@ -194,7 +194,7 @@ window.SITE_CONTENT = {
         cover: { src: 'images/category-covers/web.webp', alt: 'Web & Digital Design category cover', position: 'center', fit: 'cover' },
       rows: [2, 1, 2],
       images: [
-        portfolioProject({ title: 'Corporate Website', company: 'Client Name', slug: 'corporate-website', sector: 'B2B · Corporate · Professional Services', summary: 'A clear corporate website designed to communicate the offer quickly, build credibility and guide visitors towards meaningful contact.', cover: 'images/web/01.svg', image1: 'images/web/01.svg', image2: 'images/web/01.svg', image3: 'images/web/01.svg' }),
+          portfolioProject({ title: 'Corporate Website', company: 'Client Name', slug: 'corporate-website', sector: 'B2B · Corporate · Professional Services', summary: 'A clear corporate website designed to communicate the offer quickly, build credibility and guide visitors towards meaningful contact.', cover: 'images/web/cover-touch-stone-homes.webp', image1: 'images/web/01.svg', image2: 'images/web/01.svg', image3: 'images/web/01.svg' }),
         portfolioProject({ title: 'Campaign Landing Page', company: 'Client Name', slug: 'campaign-landing-page', sector: 'Campaign · Lead Generation · Digital Advertising', summary: 'A focused landing page that turns one campaign message into a simple, persuasive and measurable user journey.', cover: 'images/web/02.svg', image1: 'images/web/02.svg', image2: 'images/web/02.svg', image3: 'images/web/02.svg' }),
         portfolioProject({ title: 'E-commerce Experience', company: 'Client Name', slug: 'ecommerce-experience', sector: 'E-commerce · Retail · Consumer Products', summary: 'A product-led digital experience balancing brand expression, easy navigation and a confident route towards purchase.', cover: 'images/web/03.svg', image1: 'images/web/03.svg', image2: 'images/web/03.svg', image3: 'images/web/03.svg' }),
         portfolioProject({ title: 'Service Platform UI', company: 'Client Name', slug: 'service-platform-ui', sector: 'Technology · SaaS · User Experience', summary: 'A structured interface system created to make a complex service feel accessible, consistent and easy to use.', cover: 'images/web/04.svg', image1: 'images/web/04.svg', image2: 'images/web/04.svg', image3: 'images/web/04.svg' }),
