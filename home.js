@@ -1,65 +1,72 @@
-const config = window.SITE_CONTENT;
-const categories = config.categories;
-const grid = document.querySelector('.project-grid');
-const logoSource = window.STUDIO_LOGO_SVG
-  ? `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(window.STUDIO_LOGO_SVG)}`
-  : config.brand.logo;
-document.documentElement.style.setProperty('--studio-logo', `url(${JSON.stringify(logoSource)})`);
+/* Homepage: Selected work slider, built from the `featured` projects in content.js.
+   Wide screens: the section pins and the cards move sideways while you scroll.
+   Phones and reduced motion: a normal swipeable row. */
+(() => {
+  const { esc, real, observe, reduced, local } = window.Site;
 
-const esc = value => String(value).replace(/[&"'<>]/g, c => ({'&':'&amp;','"':'&quot;',"'":'&#39;','<':'&lt;','>':'&gt;'}[c]));
-const image = (asset, category) => `<img src="${esc(asset.src)}" alt="${esc(asset.alt || `${category.title} — ${asset.company || category.companies.join(' · ')}`)}" loading="lazy" style="object-fit:${esc(asset.fit || 'contain')};object-position:${esc(asset.position || 'center')}">`;
+  const featured = real.filter(p => p.project.featured).sort((a, b) => a.project.featured - b.project.featured);
+  const track = document.querySelector('.slider-track');
+  track.innerHTML = featured.map((p, i) => `
+    <a class="slide" href="${p.url}">
+      <figure><img src="${esc(p.cover)}" alt="${esc(p.title)}" loading="${i < 3 ? 'eager' : 'lazy'}"></figure>
+      <div class="slide-cap">
+        <h3>${esc(p.project.company && p.project.company !== p.title ? p.project.company : p.title)}</h3>
+        <p>${esc([p.category.title, p.project.country].filter(Boolean).join(' · '))}</p>
+      </div>
+    </a>`).join('') + `
+    <a class="slide slide-end" href="${local('work/index.html')}">
+      <span class="h-m">All projects <span aria-hidden="true">→</span></span>
+      <p>Packaging, brand identity, websites, print and events.</p>
+    </a>`;
 
-grid.innerHTML = Object.entries(categories).map(([key, category]) => `
-  <a class="project reveal" href="work/${key}/index.html">
-    <span class="project-art">${image(category.cover, category)}</span>
-    <span class="project-meta"><span><b>${esc(category.title)}</b><small>${esc(category.companies.join(' · '))}</small></span></span>
-  </a>`).join('');
+  const slider = document.querySelector('.slider');
+  const bar = document.querySelector('.slider-bar i');
+  const wide = matchMedia('(min-width: 861px)');
+  const state = { pinned: false, travel: 0, x: 0 };
 
-document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
-  link.href = `mailto:${config.brand.email}?subject=New%20project%20inquiry`;
-  if (link.classList.contains('contact-link')) link.textContent = config.brand.email;
-});
-
-const copyButton = document.querySelector('.copy-email');
-copyButton?.addEventListener('click', async () => {
-  try { await navigator.clipboard.writeText(config.brand.email); }
-  catch {
-    const input = document.createElement('textarea'); input.value = config.brand.email;
-    document.body.appendChild(input); input.select(); document.execCommand('copy'); input.remove();
+  function layout() {
+    state.pinned = !reduced && wide.matches;
+    slider.classList.toggle('is-pinned', state.pinned);
+    if (state.pinned) {
+      state.travel = Math.max(0, track.scrollWidth - innerWidth);
+      slider.style.height = `${innerHeight + state.travel}px`;
+    } else {
+      slider.style.height = '';
+      track.style.transform = '';
+      state.x = 0;
+    }
   }
-  const status = document.querySelector('.copy-email-status');
-  status.textContent = `${config.brand.email} copied to clipboard`;
-  copyButton.classList.add('copied');
-  window.setTimeout(() => { status.textContent = ''; copyButton.classList.remove('copied'); }, 1800);
-});
 
-const toggle = document.querySelector('.menu-toggle');
-const nav = document.querySelector('nav');
-const header = document.querySelector('.site-header');
-let lastScroll = 0;
-toggle?.addEventListener('click', () => {
-  const open = toggle.classList.toggle('active'); nav.classList.toggle('open', open);
-  toggle.setAttribute('aria-expanded', String(open));
-});
-window.addEventListener('scroll', () => {
-  const current = window.scrollY;
-  header.classList.toggle('hidden', !toggle?.classList.contains('active') && current > lastScroll && current > 120);
-  lastScroll = current;
-}, {passive:true});
+  let last = performance.now();
+  function frame(now) {
+    const dt = Math.min((now - last) / 1000, .1); last = now;
+    if (state.pinned) {
+      const r = slider.getBoundingClientRect();
+      const p = state.travel ? Math.min(1, Math.max(0, -r.top / state.travel)) : 0;
+      state.x += (-p * state.travel - state.x) * (1 - Math.pow(1 - .12, dt * 60));
+      track.style.transform = `translate3d(${state.x.toFixed(2)}px, 0, 0)`;
+      bar.style.width = `${p * 100}%`;
+      for (const img of track.querySelectorAll('img')) {
+        const c = img.parentElement.getBoundingClientRect();
+        const d = (c.left + c.width / 2 - innerWidth / 2) / innerWidth;
+        img.style.transform = `scale(1.12) translate3d(${(-d * 5).toFixed(2)}%, 0, 0)`;
+      }
+    }
+    requestAnimationFrame(frame);
+  }
 
-const observer = new IntersectionObserver(entries => entries.forEach(entry => {
-  if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
-}), {threshold:.08});
-document.querySelectorAll('.reveal').forEach(element => observer.observe(element));
+  // native swipe row: keep the progress bar in sync
+  track.addEventListener('scroll', () => {
+    if (state.pinned) return;
+    const max = track.scrollWidth - track.clientWidth;
+    bar.style.width = `${max ? track.scrollLeft / max * 100 : 0}%`;
+  }, { passive: true });
 
-const timeline = document.querySelector('.process-timeline');
-if (timeline) {
-  const steps = [...timeline.querySelectorAll('.timeline-step')];
-  const panels = [...timeline.querySelectorAll('.timeline-panel')];
-  steps.forEach((step, index) => step.addEventListener('click', () => {
-    steps.forEach((item, i) => { item.classList.toggle('active', i === index); item.setAttribute('aria-selected', String(i === index)); });
-    panels.forEach((panel, i) => { panel.hidden = i !== index; });
-    timeline.style.setProperty('--timeline-progress', `${index * 33.333}%`);
-  }));
-}
-document.querySelector('#year').textContent = new Date().getFullYear();
+  layout();
+  addEventListener('resize', layout);
+  addEventListener('load', layout);
+  wide.addEventListener?.('change', layout);
+  track.querySelectorAll('img').forEach(img => img.complete || img.addEventListener('load', layout, { once: true }));
+  requestAnimationFrame(frame);
+  observe();
+})();

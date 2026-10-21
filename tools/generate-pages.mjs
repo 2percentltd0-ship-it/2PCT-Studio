@@ -14,7 +14,7 @@ const workDir=path.join(root,'work');
 // or removed projects cannot leave stale, unreachable HTML files behind.
 fs.rmSync(workDir,{recursive:true,force:true});
 fs.mkdirSync(workDir,{recursive:true});
-fs.writeFileSync(path.join(workDir,'index.html'),page('Selected work — 2 Percent','Explore selected brand, campaign, packaging, digital, editorial and event design work by 2 Percent.','https://www.2pctstudio.com/work/','../'));
+fs.writeFileSync(path.join(workDir,'index.html'),page('Projects — 2 Percent','Brand identity, packaging, websites, print and event design projects by 2 Percent.','https://www.2pctstudio.com/work/','../'));
 const urls=['https://www.2pctstudio.com/','https://www.2pctstudio.com/work/'];
 for(const [key,category] of Object.entries(categories)){
   const projectAssets=new Set(category.images.flatMap(project=>[

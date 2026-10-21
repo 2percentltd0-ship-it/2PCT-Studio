@@ -1,32 +1,37 @@
 /*
-  EDIT THIS FILE FIRST.
+  EDIT THIS FILE FIRST. It is the only place where portfolio content lives.
 
-  CATEGORY COVER
-  `cover` belongs only to the category card on the homepage. It is deliberately
-  separate from every project cover and project image.
+  CATEGORY
+  - cover: image for the category (used on the Work page header and in sharing).
+  - title, lead, capabilities, companies: category texts.
 
-  PROJECT TEMPLATE
-  Every project uses the same fields:
-  - cover: card image shown inside the category
-  - image1, image2, image3: three large images shown on the project page
-  - title, company, slug, sector and summary: the case-study information
+  PROJECT FIELDS (portfolioProject)
+  Required:  title, company, slug, sector, summary, cover, image1, image2, image3
+  Optional:
+  - country:  'Australia'          shown on cards, in the index and on the project page
+  - year:     '2025'               shown on the project page when filled in
+  - featured: 1 … 6                shows the project in "Selected work" on the homepage,
+                                   in this order. Leave it out to keep it off the homepage.
+  - more:     ['images/x-04.webp', 'images/x-05.webp']
+                                   any number of extra images below image3
 
-  Replace the sample paths and text directly. Keep every slug unique inside its
-  category and run `node tools/generate-pages.mjs` after changing a slug.
+  Projects whose cover is still a numbered placeholder SVG (01.svg … 06.svg)
+  are hidden everywhere until a real image is added.
+  After changing a slug or adding a project, run: node tools/generate-pages.mjs
 */
 
-const portfolioProject = ({ title, company, slug, sector, summary, cover, image1, image2, image3 }) => ({
+const portfolioProject = ({ title, company, slug, sector, summary, cover, image1, image2, image3, country, year, featured, more = [] }) => ({
   title,
   company,
   slug,
   sector,
   summary,
+  country,
+  year,
+  featured,
   coverSrc: cover,
   src: image1,
-  gallery: [
-    { src: image2, alt: `${title} — project detail 02` },
-    { src: image3, alt: `${title} — project detail 03` }
-  ],
+  gallery: [image2, image3, ...more].filter(Boolean).map((src, i) => ({ src, alt: `${title} — project image ${String(i + 2).padStart(2, '0')}` })),
   position: 'center',
   fit: 'contain'
 });
@@ -48,7 +53,7 @@ window.SITE_CONTENT = {
       rows: [2, 1, 2],
       images: [
         portfolioProject({
-          title: "Al Shira'aa", company: "Al Shira'aa", slug: 'al-shiraa',
+          title: "Al Shira'aa", company: "Al Shira'aa", slug: 'al-shiraa', country: 'United Arab Emirates', featured: 4,
           sector: 'Equestrian Sport · Horse Breeding · International Events',
           summary: "From Al Shira'aa to Al Shira'aa Farms and Al Shira'aa Tour, we led the visual evolution of a unified equestrian brand system—creating a consistent and recognisable identity across international events and every brand touchpoint.",
           cover: 'images/branding/al-shiraa-cover.webp',
@@ -75,13 +80,13 @@ window.SITE_CONTENT = {
           cover: 'images/branding/04.svg', image1: 'images/branding/04.svg', image2: 'images/branding/04.svg', image3: 'images/branding/04.svg'
         }),
         portfolioProject({
-            title: 'Night of the Angels', company: 'Night of the Angels', slug: 'cultural-brand-identity',
+            title: 'Night of the Angels', company: 'Night of the Angels', slug: 'cultural-brand-identity', country: 'Bulgaria',
             sector: 'Charity & Social Impact',
             summary: 'A heartfelt brand identity created for Night of the Angels, a Bulgarian charitable foundation bringing together people, businesses and volunteers in support of life-changing causes. The visual direction balances warmth, hope and emotional connection, giving the initiative a recognisable identity that can unite its community across campaigns and events.',
             cover: 'images/branding/noa-cover.webp', image1: 'images/branding/noa-01.webp', image2: 'images/branding/noa-02.webp', image3: 'images/branding/noa-03.webp'
         }),
         portfolioProject({
-            title: 'FONTE Drinks', company: 'FONTE Drinks', slug: 'corporate-identity-refresh',
+            title: 'FONTE Drinks', company: 'FONTE Drinks', slug: 'corporate-identity-refresh', country: 'Switzerland',
             sector: 'Food & Beverage',
             summary: 'A vibrant brand communication project for FONTE Handcrafted Blends, a producer of next-generation café beverages served across more than 35 countries. The design introduces an expanding product range through bold colour, clear organisation and an energetic visual language that reflects the natural ingredients and distinctive character of every blend.',
           cover: 'images/branding/06.svg', image1: 'images/branding/06.svg', image2: 'images/branding/06.svg', image3: 'images/branding/06.svg'
@@ -147,13 +152,13 @@ window.SITE_CONTENT = {
       rows: [2, 2, 1],
       images: [
         portfolioProject({
-            title: 'Daily Vitality', company: 'Nourish & Purr', slug: 'collagen-packaging-system',
+            title: 'Daily Vitality', company: 'Nourish & Purr', slug: 'collagen-packaging-system', country: 'United States',
             sector: 'Pet Wellness · Animal Nutrition',
             summary: 'Packaging design for a modern cat wellness brand offering vet-formulated functional treats. The visual system combines playful typography, distinctive cat imagery and clear benefit communication to create packaging that feels smart, confident and approachable.',
             cover: 'images/packaging/cover-nourish.webp', image1: 'images/packaging/nourish-01.webp', image2: 'images/packaging/nourish-02.webp', image3: 'images/packaging/nourish-03.webp'
         }),
         portfolioProject({
-            title: 'FOCUS Adaptogenic Mushroom Coffee', company: 'Soma Functionals', slug: 'premium-supplement-range',
+            title: 'FOCUS Adaptogenic Mushroom Coffee', company: 'Soma Functionals', slug: 'premium-supplement-range', featured: 3,
             sector: 'Functional Beverages',
             summary: 'A sophisticated packaging concept for a premium functional coffee combining single-origin ground coffee with medicinal mushrooms and adaptogens. The design balances refined typography and a minimal black-and-white aesthetic with hypnotic geometric side patterns, creating a distinctive identity that communicates focus, clarity and sustained energy. The packaging system was developed with future product variants and flavours in mind.',
             cover: 'images/packaging/cover-soma.webp', image1: 'images/packaging/soma-01.webp', image2: 'images/packaging/soma-02.webp', image3: 'images/packaging/soma-03.webp'
@@ -165,19 +170,19 @@ window.SITE_CONTENT = {
             cover: 'images/packaging/cover-miracle.webp', image1: 'images/packaging/miracle-01.webp', image2: 'images/packaging/miracle-02.webp', image3: 'images/packaging/miracle-03.webp'
         }),
         portfolioProject({
-            title: 'Herbal Tea Sampler Gift Set', company: 'Green Valley Herbal Tea Company', slug: 'tea-label-collection',
+            title: 'Herbal Tea Sampler Gift Set', company: 'Green Valley Herbal Tea Company', slug: 'tea-label-collection', country: 'United States',
             sector: 'Food & Beverage · Organic Retail',
             summary: 'A complete packaging concept for Green Valley Herbal Tea Company’s organic tea sampler gift set. The design combines delicate botanical details, watercolor mountain scenery and a warm natural colour palette inspired by the teas’ Colorado origin. Individual colour-coded envelopes make each blend easy to identify, while the premium gift box brings the collection together in a calm, refined and cohesive presentation.',
             cover: 'images/packaging/cover-green-valley.webp', image1: 'images/packaging/green-valley-01.webp', image2: 'images/packaging/green-valley-02.webp', image3: 'images/packaging/green-valley-03.webp'
         }),
         portfolioProject({
-            title: 'West Winds 12 Year Old Single Malt Whisky', company: 'The West Winds Distillers', slug: 'artisan-tea-packaging',
+            title: 'West Winds 12 Year Old Single Malt Whisky', company: 'The West Winds Distillers', slug: 'artisan-tea-packaging', country: 'Australia', featured: 1,
             sector: 'Food & Drink',
             summary: 'A premium label design for a limited-edition Australian 12 Year Old Single Malt Whisky matured in bourbon casks. The intricate die-cut composition combines rich charcoal tones, copper detailing and expressive typography to communicate rarity, craftsmanship and provenance. Embossed elements, metallic finishes and individually numbered details create a tactile, collectible presentation while allowing the whisky itself to remain the visual focus.',
             cover: 'images/packaging/cover-west-winds.webp', image1: 'images/packaging/west-winds-01.webp', image2: 'images/packaging/west-winds-02.webp', image3: 'images/packaging/west-winds-03.webp'
         }),
         portfolioProject({
-            title: 'Single Vineyard Nebbiolo', company: 'Everton Hills Estate', slug: 'limited-edition-product',
+            title: 'Single Vineyard Nebbiolo', company: 'Everton Hills Estate', slug: 'limited-edition-product', country: 'Australia', featured: 2,
             sector: 'Wine & Spirits',
             summary: 'A distinctive label design created for the first release of Everton Hills Estate’s Single Vineyard Nebbiolo from Beechworth, Australia. The concept combines layered textured papers, torn edges and refined gold detailing to express the vineyard’s heritage through a contemporary and unexpected visual language. The warm natural palette and tactile materials reinforce the wine’s premium positioning, while the unconventional label construction gives the bottle a memorable presence on shelf.',
             cover: 'images/packaging/cover-everton-hills.webp', image1: 'images/packaging/everton-hills-01.webp', image2: 'images/packaging/everton-hills-02.webp', image3: 'images/packaging/everton-hills-03.webp'
@@ -194,8 +199,8 @@ window.SITE_CONTENT = {
         cover: { src: 'images/category-covers/web.webp', alt: 'Web & Digital Design category cover', position: 'center', fit: 'cover' },
       rows: [2, 1, 2],
       images: [
-          portfolioProject({ title: 'Touchstone Homes', company: 'Touchstone Homes', slug: 'corporate-website', sector: 'Luxury Construction · Residential Development', summary: 'A refined website for Touchstone Homes, a California-based developer of architecturally significant residences for private clients. The design combines immersive architectural photography, spacious layouts, elegant typography, and restrained navigation to communicate exclusivity, precision, and uncompromising craftsmanship across both desktop and mobile experiences.', cover: 'images/web/cover-touch-stone-homes.webp', image1: 'images/web/touch-stone-homes-01.webp', image2: 'images/web/touch-stone-homes-02.webp', image3: 'images/web/touch-stone-homes-03.webp' }),
-          portfolioProject({ title: 'XFLOOW', company: 'XFLOOW', slug: 'campaign-landing-page', sector: 'Water Sports · Sports Technology', summary: 'A modern, immersive website concept for XFLOOW—an innovative electric foil assist system designed to make foiling more accessible, flexible, and enjoyable. The digital experience combines dynamic watersports photography, technical product information, community-focused content, and a distinctive visual system inspired by the ocean and movement.', cover: 'images/web/cover-xfloow.webp', image1: 'images/web/xfloow-01.webp', image2: 'images/web/xfloow-02.webp', image3: 'images/web/xfloow-03.webp' }),
+          portfolioProject({ title: 'Touchstone Homes', company: 'Touchstone Homes', slug: 'corporate-website', country: 'United States', sector: 'Luxury Construction · Residential Development', summary: 'A refined website for Touchstone Homes, a California-based developer of architecturally significant residences for private clients. The design combines immersive architectural photography, spacious layouts, elegant typography, and restrained navigation to communicate exclusivity, precision, and uncompromising craftsmanship across both desktop and mobile experiences.', cover: 'images/web/cover-touch-stone-homes.webp', image1: 'images/web/touch-stone-homes-01.webp', image2: 'images/web/touch-stone-homes-02.webp', image3: 'images/web/touch-stone-homes-03.webp' }),
+          portfolioProject({ title: 'XFLOOW', company: 'XFLOOW', slug: 'campaign-landing-page', country: 'United States', featured: 6, sector: 'Water Sports · Sports Technology', summary: 'A modern, immersive website concept for XFLOOW—an innovative electric foil assist system designed to make foiling more accessible, flexible, and enjoyable. The digital experience combines dynamic watersports photography, technical product information, community-focused content, and a distinctive visual system inspired by the ocean and movement.', cover: 'images/web/cover-xfloow.webp', image1: 'images/web/xfloow-01.webp', image2: 'images/web/xfloow-02.webp', image3: 'images/web/xfloow-03.webp' }),
           portfolioProject({ title: 'FireCircle', company: 'FireCircle', slug: 'ecommerce-experience', sector: 'Firefighting · Training Software', summary: 'A modern website designed to present FireCircle’s software solutions for fire departments, training providers, and public safety organizations. The experience combines strong firefighting imagery, clear product and service information, structured user-focused content, and prominent calls to action—guiding visitors toward software presentations, seminar offerings, and direct contact with the FireCircle team.', cover: 'images/web/cover-fire-circles.webp', image1: 'images/web/fire-circles-01.webp', image2: 'images/web/fire-circles-02.webp', image3: 'images/web/fire-circles-03.webp' }),
           portfolioProject({ title: 'Experienza', company: 'Experienza', slug: 'service-platform-ui', sector: 'Travel & Tourism · Digital Services', summary: 'A mobile app design for discovering and booking travel experiences. The interface guides users from browsing destinations and excursions through trip details, date selection, and payment. Clear navigation, destination photography, and a restrained teal palette keep the focus on the places and experiences users can explore.', cover: 'images/web/cover-tuexperiencia.webp', image1: 'images/web/tuexperiencia-01.webp', image2: 'images/web/tuexperiencia-02.webp', image3: 'images/web/tuexperiencia-03.webp' }),
           portfolioProject({ title: 'ScrumBuddy', company: 'ScrumBuddy', slug: 'digital-brand-hub', sector: 'Software · Project Management', summary: 'A website design for ScrumBuddy, an AI-powered tool that helps agile teams refine requirements, estimate work, and improve collaboration. The visual direction pairs a dark violet palette and expressive typography with product previews, feature illustrations, and clear calls to action, making a detailed software offering easier to explore.', cover: 'images/web/cover-scrumbuddy.webp', image1: 'images/web/scrumbuddy-01.webp', image2: 'images/web/scrumbuddy-02.webp', image3: 'images/web/scrumbuddy-03.webp' }),
@@ -212,12 +217,12 @@ window.SITE_CONTENT = {
         cover: { src: 'images/category-covers/print.webp', alt: 'Editorial & Print category cover', position: 'center', fit: 'cover' },
       rows: [2, 1, 2],
       images: [
-          portfolioProject({ title: 'Architects’ Darling 2026', company: 'Heinze', slug: 'international-business-brochure', sector: 'Art Direction · Invitation Design · Print Production', summary: 'A premium multi-panel invitation designed for Architects’ Darling 2026. The concept combines golden light effects, minimalist typography, and dramatic black contrasts, transforming the event programme into an elegant and memorable print experience.', cover: 'images/print/cover-darling.webp', image1: 'images/print/darling-01.webp', image2: 'images/print/darling-02.webp', image3: 'images/print/darling-03.webp' }),
-          portfolioProject({ title: 'Fonte Drinks', company: 'Fonte Drinks AG', slug: 'corporate-publication', sector: 'Beverage Brand', summary: 'A vibrant recipe booklet designed for FONTE to showcase its range of specialty beverage concentrates, syrups and latte blends. The project combines clear preparation instructions, bold product photography and a structured editorial layout. The result is an engaging and easy-to-use presentation that reflects the brand’s playful, contemporary and handcrafted identity.', cover: 'images/print/cover-fonte.webp', image1: 'images/print/fonte-01.webp', image2: 'images/print/fonte-02.webp', image3: 'images/print/fonte-03.webp' }),
-          portfolioProject({ title: 'Кunstrasen König', company: 'Kunstrasen König', slug: 'annual-report', sector: 'Home & Garden · Landscape Design', summary: 'A premium product catalogue created for Kunstrasen König, a German specialist in artificial grass solutions. The editorial concept combines lifestyle photography, structured product information and a fresh green-and-white visual language to communicate quality, comfort and effortless outdoor living.', cover: 'images/print/cover-konig.webp', image1: 'images/print/konig-01.webp', image2: 'images/print/konig-02.webp', image3: 'images/print/konig-03.webp' }),
+          portfolioProject({ title: 'Architects’ Darling 2026', company: 'Heinze', slug: 'international-business-brochure', country: 'Germany', featured: 5, sector: 'Art Direction · Invitation Design · Print Production', summary: 'A premium multi-panel invitation designed for Architects’ Darling 2026. The concept combines golden light effects, minimalist typography, and dramatic black contrasts, transforming the event programme into an elegant and memorable print experience.', cover: 'images/print/cover-darling.webp', image1: 'images/print/darling-01.webp', image2: 'images/print/darling-02.webp', image3: 'images/print/darling-03.webp' }),
+          portfolioProject({ title: 'Fonte Drinks', company: 'Fonte Drinks AG', slug: 'corporate-publication', country: 'Switzerland', sector: 'Beverage Brand', summary: 'A vibrant recipe booklet designed for FONTE to showcase its range of specialty beverage concentrates, syrups and latte blends. The project combines clear preparation instructions, bold product photography and a structured editorial layout. The result is an engaging and easy-to-use presentation that reflects the brand’s playful, contemporary and handcrafted identity.', cover: 'images/print/cover-fonte.webp', image1: 'images/print/fonte-01.webp', image2: 'images/print/fonte-02.webp', image3: 'images/print/fonte-03.webp' }),
+          portfolioProject({ title: 'Kunstrasen König', company: 'Kunstrasen König', slug: 'annual-report', country: 'Germany', sector: 'Home & Garden · Landscape Design', summary: 'A premium product catalogue created for Kunstrasen König, a German specialist in artificial grass solutions. The editorial concept combines lifestyle photography, structured product information and a fresh green-and-white visual language to communicate quality, comfort and effortless outdoor living.', cover: 'images/print/cover-konig.webp', image1: 'images/print/konig-01.webp', image2: 'images/print/konig-02.webp', image3: 'images/print/konig-03.webp' }),
           portfolioProject({ title: 'Assistor', company: 'AssistRoute', slug: 'sales-presentation', sector: 'Digital Marketplace · Automotive Services', summary: 'An illustrated online infographic created for The Road Assistor—a business-listing platform connecting motorists directly with independent roadside assistance providers. The design uses bold typography, colorful cityscapes and road-inspired graphics to transform a complex range of services into a clear and engaging visual journey.', cover: 'images/print/cover-assistor.webp', image1: 'images/print/assistor-01.webp', image2: 'images/print/assistor-02.webp', image3: 'images/print/assistor-03.webp' }),
           portfolioProject({ title: 'En Mode Avion', company: 'Disruptive Production', slug: 'product-catalogue', sector: 'Film & Entertainment', summary: 'Poster design for En Mode Avion, an independent documentary following a journey across the Pyrenees. The artwork combines the protagonist and mountain landscape to express solitude, freedom and inner transformation.', cover: 'images/print/cover-avion.webp', image1: 'images/print/avion-01.webp', image2: 'images/print/avion-02.webp', image3: 'images/print/avion-03.webp' }),
-          portfolioProject({ title: 'Maverick', company: 'Maverick Property Group', slug: 'premium-invitation', sector: 'Real Estate Investment · Property Management', summary: 'A clean and sophisticated investor presentation developed for Maverick Property Group—a hands-on multifamily real estate investment firm based in Minnesota. The deck presents the company’s investment strategy, operational model, track record and value-creation approach through strong typography, structured layouts, financial graphics and a visually engaging renovation case study.', cover: 'images/print/cover-maverick.webp', image1: 'images/print/maverick-01.webp', image2: 'images/print/maverick-02.webp', image3: 'images/print/maverick-03.webp' })
+          portfolioProject({ title: 'Maverick', company: 'Maverick Property Group', slug: 'premium-invitation', country: 'United States', sector: 'Real Estate Investment · Property Management', summary: 'A clean and sophisticated investor presentation developed for Maverick Property Group—a hands-on multifamily real estate investment firm based in Minnesota. The deck presents the company’s investment strategy, operational model, track record and value-creation approach through strong typography, structured layouts, financial graphics and a visually engaging renovation case study.', cover: 'images/print/cover-maverick.webp', image1: 'images/print/maverick-01.webp', image2: 'images/print/maverick-02.webp', image3: 'images/print/maverick-03.webp' })
       ]
     },
 
@@ -231,7 +236,7 @@ window.SITE_CONTENT = {
       rows: [1, 2, 2],
       images: [
         portfolioProject({ title: 'Awards Event Identity', company: 'Heinze', slug: 'awards-event-identity', sector: 'Architecture · Awards · Live Events', summary: 'A premium visual system created to give an established awards event a coherent presence from invitation to venue.', cover: 'images/events/01.svg', image1: 'images/events/01.svg', image2: 'images/events/01.svg', image3: 'images/events/01.svg' }),
-        portfolioProject({ title: 'Exhibition Experience', company: 'Heinze', slug: 'exhibition-experience', sector: 'Architecture · Exhibition · B2B', summary: 'A coordinated exhibition direction connecting spatial graphics, information hierarchy and brand presence across the visitor experience.', cover: 'images/events/02.png', image1: 'images/events/02.png', image2: 'images/events/02.png', image3: 'images/events/02.png' }),
+        portfolioProject({ title: 'Exhibition Experience', company: 'Heinze', slug: 'exhibition-experience', sector: 'Architecture · Exhibition · B2B', summary: 'A coordinated exhibition direction connecting spatial graphics, information hierarchy and brand presence across the visitor experience.', cover: 'images/events/02.webp', image1: 'images/events/02.webp', image2: 'images/events/02.webp', image3: 'images/events/02.webp' }),
         portfolioProject({ title: 'Conference Visual System', company: 'Client Name', slug: 'conference-visual-system', sector: 'Conference · Business · Professional Audience', summary: 'A scalable conference system designed to organise content clearly across stage, screen, signage and supporting communication.', cover: 'images/events/03.svg', image1: 'images/events/03.svg', image2: 'images/events/03.svg', image3: 'images/events/03.svg' }),
         portfolioProject({ title: 'International Sports Event', company: 'Client Name', slug: 'international-sports-event', sector: 'Sport · Sponsorship · International Events', summary: 'A bold event identity built for immediate visibility across arena graphics, digital screens and international broadcast environments.', cover: 'images/events/04.svg', image1: 'images/events/04.svg', image2: 'images/events/04.svg', image3: 'images/events/04.svg' }),
         portfolioProject({ title: 'Retail Pop-up Environment', company: 'Client Name', slug: 'retail-pop-up-environment', sector: 'Retail · Experiential Marketing · Consumer Brand', summary: 'A flexible pop-up design system that translates the brand into a clear, engaging and practical physical experience.', cover: 'images/events/05.svg', image1: 'images/events/05.svg', image2: 'images/events/05.svg', image3: 'images/events/05.svg' }),
