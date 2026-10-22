@@ -16,6 +16,7 @@
 
   // ── Projects list (all, or one discipline) ──────────────────────────
   function listPage(key, { push = false } = {}) {
+    const keepScroll = main.querySelector('.filters')?.scrollLeft || 0;
     const category = categories[key];
     const list = category ? real.filter(p => p.key === key)
       : [...real.filter(p => p.project.featured).sort((a, b) => a.project.featured - b.project.featured), ...real.filter(p => !p.project.featured)];
@@ -47,6 +48,15 @@
       history.pushState({ key: a.dataset.key }, '', a.href);
       scrollTo({ top: 0, behavior: 'instant' });
     }));
+    // keep the tab row where it was, and make sure the chosen tab is fully visible
+    const row = main.querySelector('.filters');
+    const active = row.querySelector('.is-active');
+    row.scrollLeft = keepScroll;
+    if (active) {
+      const pad = 16;
+      if (active.offsetLeft - pad < row.scrollLeft) row.scrollLeft = active.offsetLeft - pad;
+      else if (active.offsetLeft + active.offsetWidth + pad > row.scrollLeft + row.clientWidth) row.scrollLeft = active.offsetLeft + active.offsetWidth + pad - row.clientWidth;
+    }
     observe(main);
     if (push) main.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
   }

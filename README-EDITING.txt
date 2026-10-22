@@ -50,7 +50,11 @@ HOMEPAGE
 
 DESIGN RULES
 - One corner radius for everything: --radius (4px) at the top of styles.css.
-- Two kinds of action: .button (filled, primary) and .arrow-link (text + arrow).
+- Three kinds of action: .button (filled burgundy, main action), .button.button-outline
+  (outline, secondary action) and .arrow-link (text + arrow, inside text only).
+- Hero (desktop only): a grid of 100 squares, two in burgundy. A wave rolls towards the
+  two burgundy squares, they pulse and move to a new spot; the pointer leaves a short
+  trail. Timing is in the grid part of home.js.
 - Pages fade in softly when they open.
 
 RECOMMENDED IMAGE SIZES

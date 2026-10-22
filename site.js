@@ -125,7 +125,10 @@
       let dominant = toned[0].dataset.tone;
       for (let i = 1; i < toned.length; i++) {
         const top = toned[i].getBoundingClientRect().top;
-        const t = smooth(clamp((vh * 0.72 - top) / (vh * 0.4)));
+        // on tall screens the next section can already be visible at the very top of
+        // the page; start the blend point below it so colours only change once you scroll
+        const start = Math.min(vh * 0.72, top + scrollY - 40);
+        const t = smooth(clamp((start - top) / (vh * 0.4)));
         if (t <= 0) break;
         const next = T[toned[i].dataset.tone];
         cur = cur.map((c, k) => c.map((v, j) => v + (next[k][j] - v) * t));
