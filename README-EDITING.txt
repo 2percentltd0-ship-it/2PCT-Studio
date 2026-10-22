@@ -77,3 +77,10 @@ LOGO
   so the logo also shows when the site is opened offline.
 
 No build tools are required. The website is plain HTML, CSS and JavaScript.
+
+UPDATING THE LIVE SITE (browser cache)
+- Every CSS and JS file is linked with a version number, e.g. styles.css?v=7.
+- When you change a CSS or JS file, raise the number in index.html and in
+  portfolio-template.html (find "?v=7", replace with "?v=8"), then run
+  node tools/generate-pages.mjs. Visitors' browsers then load the new files
+  instead of old saved copies.
